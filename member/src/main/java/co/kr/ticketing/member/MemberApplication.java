@@ -1,13 +1,13 @@
-package co.kr.ticketing.ticketing;
+package co.kr.ticketing.member;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TicketingApplication {
+public class MemberApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TicketingApplication.class, args);
+		SpringApplication.run(MemberApplication.class, args);
 	}
 
 }

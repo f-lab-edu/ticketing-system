@@ -1,0 +1,13 @@
+dependencies {
+}
+
+bootJar {
+    archivesBaseName = 'Admin'
+    archiveFileName = 'admin.jar'
+    destinationDirectory = file(project.rootProject.projectDir)
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

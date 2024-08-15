@@ -1,1 +1,4 @@
 rootProject.name = 'ticketing'
+
+include 'member'
+findProject(':member')?.name = 'member'

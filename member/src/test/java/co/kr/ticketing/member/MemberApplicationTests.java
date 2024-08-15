@@ -1,10 +1,10 @@
-package co.kr.ticketing.ticketing;
+package co.kr.ticketing.member;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class TicketingApplicationTests {
+class MemberApplicationTests {
 
 	@Test
 	void contextLoads() {
