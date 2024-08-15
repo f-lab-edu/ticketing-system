@@ -19,10 +19,14 @@ import lombok.experimental.FieldDefaults;
 public class MemberService {
 	MemberRepository memberRepository;
 
+	public boolean isExistMember(String phoneNumber) {
+		return memberRepository.findByPhoneNumber(phoneNumber).isPresent();
+	}
+
 	public Member create(CreateMemberDto createDto) {
 		return memberRepository.save(createDto.toModel(encodePassword(createDto.password())));
 	}
-
+	
 	private String encodePassword(String password) {
 		return Hashing.sha256()
 			.hashString(password, StandardCharsets.UTF_8)
