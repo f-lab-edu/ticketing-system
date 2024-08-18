@@ -1,6 +1,7 @@
 package co.kr.ticketing.member.domain.service;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -19,14 +20,22 @@ import lombok.experimental.FieldDefaults;
 public class MemberService {
 	MemberRepository memberRepository;
 
+	public Optional<Member> findByPhoneNumber(String phoneNumber) {
+		return memberRepository.findByPhoneNumber(phoneNumber);
+	}
+
 	public boolean isExistMember(String phoneNumber) {
 		return memberRepository.findByPhoneNumber(phoneNumber).isPresent();
+	}
+
+	public boolean isMatchPassword(Member member, String password) {
+		return member.getPassword().equals(encodePassword(password));
 	}
 
 	public Member create(CreateMemberDto createDto) {
 		return memberRepository.save(createDto.toModel(encodePassword(createDto.password())));
 	}
-	
+
 	private String encodePassword(String password) {
 		return Hashing.sha256()
 			.hashString(password, StandardCharsets.UTF_8)
