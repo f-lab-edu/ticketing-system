@@ -10,6 +10,7 @@ import java.util.Map;
 import org.springframework.stereotype.Component;
 
 import co.kr.ticketing.member.auth.config.AuthConfig;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.AccessLevel;
@@ -21,8 +22,25 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtUtil {
 
-	public String generateAccessToken(Map<String, Object> valueMap, int expireSeconds) {
+	public String generateJwt(Map<String, Object> valueMap, int expireSeconds) {
 		return generateToken(valueMap, expireSeconds, AuthConfig.SECRET_KEY);
+	}
+
+	public boolean isValidJwt(String jwt) {
+		if (jwt.isEmpty()) {
+			return false;
+		}
+
+		try {
+			Jwts.parser()
+				.setSigningKey(AuthConfig.SECRET_KEY.getBytes())
+				.parseClaimsJws(jwt)
+				.getBody();
+		} catch (JwtException e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private String generateToken(Map<String, Object> valueMap, int expireSeconds, String secretKey) {

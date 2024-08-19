@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.kr.ticketing.member.auth.aop.LoginCheck;
 import co.kr.ticketing.member.auth.config.AuthConfig;
 import co.kr.ticketing.member.auth.util.TokenUtil;
 import co.kr.ticketing.member.controller.request.LoginRequest;
@@ -47,6 +48,14 @@ public class MemberController {
 		response.addHeader("Set-Cookie", responseCookie.toString());
 	}
 
+	@LoginCheck
+	@PostMapping("/logout")
+	public void Logout(HttpServletResponse response) {
+		ResponseCookie responseCookie = invalidLoginTokenCookie();
+
+		response.addHeader("Set-Cookie", responseCookie.toString());
+	}
+
 	private ResponseCookie createLoginTokenCookie(Member member) {
 		String loginToken = tokenUtil.generateToken(member);
 
@@ -56,6 +65,17 @@ public class MemberController {
 			.isEncode(true)
 			.httpOnly(true)
 			.maxAge(AuthConfig.TOKEN_VALID_TIME)
+			.build()
+		);
+	}
+
+	private ResponseCookie invalidLoginTokenCookie() {
+		return cookieUtil.createTokenCookie(CookieDto.builder()
+			.name(AuthConfig.LOGIN_COOKIE_NAME)
+			.value(null)
+			.isEncode(false)
+			.httpOnly(true)
+			.maxAge(0)
 			.build()
 		);
 	}

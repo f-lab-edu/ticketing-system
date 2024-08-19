@@ -21,6 +21,10 @@ public class TokenUtil {
 			AuthConfig.PHONE_NUMBER, member.getPhoneNumber()
 		);
 
-		return jwtUtil.generateAccessToken(payload, AuthConfig.TOKEN_VALID_TIME);
+		return jwtUtil.generateJwt(payload, AuthConfig.TOKEN_VALID_TIME);
+	}
+
+	public boolean isValidToken(String token) {
+		return jwtUtil.isValidJwt(token);
 	}
 }
