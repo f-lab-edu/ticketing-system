@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import co.kr.ticketing.member.controller.request.SignUpRequest;
 import co.kr.ticketing.member.domain.service.MemberService;
-import co.kr.ticketing.member.exception.ConflicException;
+import co.kr.ticketing.member.exception.ConflictException;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,7 +17,7 @@ public class SignUpUseCase {
 
 	public void execute(SignUpRequest request) {
 		if (memberService.isExistMember(request.phoneNumber())) {
-			throw new ConflicException("이미 가입된 회원입니다");
+			throw new ConflictException("이미 가입된 회원입니다");
 		}
 
 		memberService.create(request.toDto());
