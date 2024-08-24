@@ -8,10 +8,11 @@ public record CreateMemberDto(
 	String phoneNumber,
 	String password
 ) {
-	public Member toModel(String encodedPassword) {
+	public Member toModel(PasswordInfo passwordInfo) {
 		return Member.builder()
 			.phoneNumber(phoneNumber)
-			.password(encodedPassword)
+			.password(passwordInfo.encodedPassword())
+			.salt(passwordInfo.salt())
 			.build();
 	}
 }
