@@ -1,11 +1,8 @@
 package co.kr.ticketing.member.domain.service;
 
-import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
-
-import com.google.common.hash.Hashing;
 
 import co.kr.ticketing.member.domain.model.Member;
 import co.kr.ticketing.member.domain.repository.MemberRepository;
@@ -29,16 +26,10 @@ public class MemberService {
 	}
 
 	public boolean isMatchPassword(Member member, String password) {
-		return member.getPassword().equals(encodePassword(password));
+		return PasswordUtil.isMatchPassword(member, password);
 	}
 
 	public Member create(CreateMemberDto createDto) {
-		return memberRepository.save(createDto.toModel(encodePassword(createDto.password())));
-	}
-
-	private String encodePassword(String password) {
-		return Hashing.sha256()
-			.hashString(password, StandardCharsets.UTF_8)
-			.toString();
+		return memberRepository.save(createDto.toModel(PasswordUtil.encodePassword(createDto.password())));
 	}
 }
