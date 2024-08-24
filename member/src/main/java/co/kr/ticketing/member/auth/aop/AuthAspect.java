@@ -11,7 +11,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import co.kr.ticketing.member.auth.config.AuthConfig;
 import co.kr.ticketing.member.auth.util.TokenUtil;
-import co.kr.ticketing.member.exception.UnAuthorized;
+import co.kr.ticketing.member.exception.UnAuthorizedException;
 import jakarta.servlet.http.Cookie;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +30,7 @@ public class AuthAspect {
 	public void loginCheck(JoinPoint jp) {
 		String token = getToken();
 		if (!tokenUtil.isValidToken(token)) {
-			throw new UnAuthorized();
+			throw new UnAuthorizedException();
 		}
 	}
 
@@ -41,7 +41,7 @@ public class AuthAspect {
 		return cookies == null ? "" : Arrays.stream(cookies)
 			.filter(cookie -> cookie.getName().equals(AuthConfig.LOGIN_COOKIE_NAME))
 			.findAny()
-			.orElseThrow(UnAuthorized::new)
+			.orElseThrow(UnAuthorizedException::new)
 			.getValue();
 	}
 }
