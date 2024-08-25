@@ -15,7 +15,7 @@ public class ExceptionAdvice {
 		ResponseDto<String> responseDto = new ResponseDto<>(exception.getStatus().toString(),
 			exception.getMessage());
 		log.error("Server Error 발생 : origin exception: {}", exception.getCause().getClass().getName());
-		exception.getCause().printStackTrace();
+		log.error("stack trace", exception);
 
 		return new ResponseEntity<>(responseDto, exception.getStatus());
 	}
