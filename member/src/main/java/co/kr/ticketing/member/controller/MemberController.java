@@ -1,6 +1,8 @@
 package co.kr.ticketing.member.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -10,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import co.kr.ticketing.member.auth.aop.LoginCheck;
 import co.kr.ticketing.member.auth.config.AuthConfig;
 import co.kr.ticketing.member.auth.util.TokenUtil;
+import co.kr.ticketing.member.common.ResponseDto;
 import co.kr.ticketing.member.controller.request.LoginRequest;
 import co.kr.ticketing.member.controller.request.SignUpRequest;
+import co.kr.ticketing.member.controller.response.MemberResponseCode;
 import co.kr.ticketing.member.domain.model.Member;
 import co.kr.ticketing.member.usecase.LoginUseCase;
 import co.kr.ticketing.member.usecase.SignUpUseCase;
@@ -35,25 +39,32 @@ public class MemberController {
 	LoginUseCase loginUseCase;
 
 	@PostMapping
-	public void SignUp(@RequestBody @Valid SignUpRequest request) {
+	public ResponseEntity<ResponseDto> SignUp(@RequestBody @Valid SignUpRequest request) {
 		signupUseCase.execute(request);
+
+		return ResponseEntity.status(HttpStatus.CREATED)
+			.body(new ResponseDto<>(MemberResponseCode.MEMBER_CREATED.name()));
 	}
 
 	@PostMapping("/login")
-	public void Login(@RequestBody @Valid LoginRequest request, HttpServletResponse response) {
+	public ResponseEntity<ResponseDto> Login(@RequestBody @Valid LoginRequest request, HttpServletResponse response) {
 		Member member = loginUseCase.execute(request);
 
 		ResponseCookie responseCookie = createLoginTokenCookie(member);
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
+
+		return ResponseEntity.ok(new ResponseDto<>(MemberResponseCode.LOGIN_SUCCESS.name()));
 	}
 
 	@LoginCheck
 	@PostMapping("/logout")
-	public void Logout(HttpServletResponse response) {
+	public ResponseEntity<ResponseDto> Logout(HttpServletResponse response) {
 		ResponseCookie responseCookie = invalidLoginTokenCookie();
 
 		response.addHeader("Set-Cookie", responseCookie.toString());
+
+		return ResponseEntity.ok(new ResponseDto<>(MemberResponseCode.LOGOUT_SUCCESS.name()));
 	}
 
 	private ResponseCookie createLoginTokenCookie(Member member) {
