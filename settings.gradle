@@ -2,3 +2,7 @@ rootProject.name = 'ticketing'
 
 include 'member'
 findProject(':member')?.name = 'member'
+
+include 'admin'
+include 'admin:admin-concert'
+findProject(':admin:admin-concert')?.name = 'admin-concert'
