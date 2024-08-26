@@ -17,8 +17,8 @@ dependencies {
 }
 
 bootJar {
-    archivesBaseName = 'Admin'
-    archiveFileName = 'admin.jar'
+    archivesBaseName = 'Member'
+    archiveFileName = 'member.jar'
     destinationDirectory = file(project.rootProject.projectDir)
     enabled = true
 }
