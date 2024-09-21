@@ -1,5 +1,7 @@
 package co.kr.ticketing.adminconcert.place.service;
 
+import java.util.List;
+
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,10 @@ public class PlaceVersionService {
 			.orElseThrow(() -> new ResourceNotFoundException("version", identifier));
 	}
 
+	public List<PlaceVersion> getLastVersionsByPlaceName(String placeName) {
+		return placeVersionRepository.findByPlaceNameContainsAndLastIsTrue(placeName);
+	}
+
 	public long createNewVersion(Place place) {
 		PlaceVersion newVersion = PlaceVersion.newVersion(place, uuidGenerator);
 		return placeVersionRepository.save(newVersion).getId();
@@ -33,6 +39,7 @@ public class PlaceVersionService {
 		long id;
 		try {
 			PlaceVersion placeVersion = version.nextVersion(place);
+
 			id = placeVersionRepository.save(placeVersion).getId();
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateException("정보가 수정됐습니다. 확인 후 다시 작성 해주세요");

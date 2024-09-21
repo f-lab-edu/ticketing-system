@@ -53,6 +53,9 @@ public class PlaceVersion {
 	@Column(nullable = false)
 	@ColumnDefault("0")
 	private Long version;
+	@Column(nullable = false)
+	@ColumnDefault("false")
+	private boolean last;
 
 	@OneToOne(fetch = FetchType.LAZY, optional = false)
 	private Place place;
@@ -61,14 +64,18 @@ public class PlaceVersion {
 		return PlaceVersion.builder()
 			.identifier(generator.generate())
 			.place(place)
+			.last(true)
 			.build();
 	}
 
 	public PlaceVersion nextVersion(Place place) {
+		this.last = false;
+		
 		return PlaceVersion.builder()
 			.identifier(identifier)
 			.version(getNextVersion())
 			.place(place)
+			.last(true)
 			.build();
 	}
 
