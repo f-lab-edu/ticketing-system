@@ -40,6 +40,8 @@ public record AddPlaceRequest(
 		return Place.builder()
 			.name(name)
 			.address(address)
+			.identifier(identifier)
+			.last(true)
 			.seats(seats.stream().map(SeatRequest::toModel).toList())
 			.build();
 	}

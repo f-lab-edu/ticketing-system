@@ -2,7 +2,7 @@ package co.kr.ticketing.adminconcert.place.controller.response;
 
 import java.util.List;
 
-import co.kr.ticketing.adminconcert.place.domain.model.PlaceVersion;
+import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import lombok.Builder;
 
 @Builder
@@ -15,16 +15,16 @@ public record GetPlaceResponse(
 		String identifier,
 		String name
 	) {
-		public static PlaceResponse from(PlaceVersion version) {
+		public static PlaceResponse from(Place place) {
 			return PlaceResponse.builder()
-				.id(version.getPlace().getId())
-				.identifier(version.getIdentifier())
-				.name(version.getPlace().getName())
+				.id(place.getId())
+				.identifier(place.getIdentifier())
+				.name(place.getName())
 				.build();
 		}
 	}
 
-	public static GetPlaceResponse from(List<PlaceVersion> places) {
+	public static GetPlaceResponse from(List<Place> places) {
 		return GetPlaceResponse.builder()
 			.places(places.stream().map(PlaceResponse::from).toList())
 			.build();
