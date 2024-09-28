@@ -1,0 +1,35 @@
+### get
+GET http://localhost:8081/places?name=올림픽
+
+### addPlace
+POST http://localhost:8081/places
+Content-Type: application/json
+
+{
+  "name": "올림픽공원",
+  "address": "seoul",
+  "seats": [
+    {
+      "columnNum": 1,
+      "rowNum": 1,
+      "floor": 1
+    }
+  ]
+}
+
+### addPlace with identifier
+POST http://localhost:8081/places
+Content-Type: application/json
+
+{
+  "name": "올림픽공원2",
+  "address": "seoul",
+  "seats": [
+    {
+      "columnNum": 1,
+      "rowNum": 1,
+      "floor": 1
+    }
+  ],
+  "identifier": "da6db354-d4eb-403a-9526-cb400311114a"
+}
