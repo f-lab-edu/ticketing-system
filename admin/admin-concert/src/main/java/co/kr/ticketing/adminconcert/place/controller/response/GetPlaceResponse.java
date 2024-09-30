@@ -17,9 +17,9 @@ public record GetPlaceResponse(
 	) {
 		public static PlaceResponse from(Place place) {
 			return PlaceResponse.builder()
-				.id(place.getId())
-				.identifier(place.getIdentifier())
-				.name(place.getName())
+				.id(place.id())
+				.identifier(place.identifier())
+				.name(place.name())
 				.build();
 		}
 	}
