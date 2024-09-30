@@ -40,6 +40,7 @@ public class PlaceService {
 		try {
 			Place lastPlace = getLastVersion(place.getIdentifier());
 
+			lastPlace.setNotLast();
 			return placeRepository.save(place.getNextPlace(lastPlace)).getId();
 		} catch (DataIntegrityViolationException e) {
 			throw new DuplicateException("정보가 수정됐습니다. 확인 후 다시 작성 해주세요");

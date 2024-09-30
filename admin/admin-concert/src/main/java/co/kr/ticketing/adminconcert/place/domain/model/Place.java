@@ -107,8 +107,6 @@ public class Place {
 	}
 
 	public Place getNextPlace(Place beforePlace) {
-		beforePlace.last = false;
-
 		return Place.builder()
 			.name(name)
 			.address(address)
@@ -121,5 +119,9 @@ public class Place {
 
 	public Long getNextVersion() {
 		return this.version + 1;
+	}
+
+	public void setNotLast() {
+		this.last = false;
 	}
 }
