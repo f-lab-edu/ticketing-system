@@ -1,5 +1,7 @@
 package co.kr.ticketing.adminconcert.concert.infrastructure;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,11 @@ import lombok.experimental.FieldDefaults;
 public class ConcertAdapter implements ConcertRepository {
 	ConcertJpaRepository concertJpaRepository;
 	PlaceJpaRepository placeJpaRepository;
+
+	@Override
+	public Optional<Concert> find(Long id) {
+		return concertJpaRepository.findById(id).map(ConcertEntity::toModel);
+	}
 
 	@Override
 	@Transactional

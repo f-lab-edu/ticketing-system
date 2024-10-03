@@ -1,3 +1,6 @@
+### get concert
+GET http://localhost:8081/concerts/1
+
 ### create concert
 POST http://localhost:8081/concerts
 Content-Type: application/json
