@@ -21,4 +21,7 @@ public record Concert(
 	Place place,
 	List<ConcertSeat> seats
 ) {
+	public boolean isPossibleUpdate() {
+		return !state.equals(CONCERT_STATE.CLOSE);
+	}
 }

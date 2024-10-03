@@ -3,6 +3,7 @@ package co.kr.ticketing.adminconcert.concert.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -11,11 +12,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.kr.ticketing.adminconcert.common.dto.CreatedDto;
 import co.kr.ticketing.adminconcert.common.dto.ResponseDto;
+import co.kr.ticketing.adminconcert.common.dto.UpdatedDto;
 import co.kr.ticketing.adminconcert.concert.controller.request.CreateConcertRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertResponseCode;
 import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertResponse;
 import co.kr.ticketing.adminconcert.concert.usecase.CreateConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.GetConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.UpdateConcertUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -30,6 +34,7 @@ import lombok.experimental.FieldDefaults;
 public class ConcertController {
 	CreateConcertUseCase createConcertUseCase;
 	GetConcertUseCase getConcertUseCase;
+	UpdateConcertUseCase updateConcertUseCase;
 
 	@PostMapping
 	public ResponseEntity<ResponseDto<CreatedDto>> createConcert(@RequestBody @Valid CreateConcertRequest request) {
@@ -43,5 +48,17 @@ public class ConcertController {
 	public ResponseEntity<ResponseDto<GetConcertResponse>> get(@PathVariable @Positive Long id) {
 		var response = getConcertUseCase.execute(id);
 		return ResponseEntity.ok(new ResponseDto<>(ConcertResponseCode.GET_CONCERT.name(), response));
+	}
+
+	@PatchMapping("/{id}")
+	public ResponseEntity<ResponseDto<UpdatedDto>> update(
+		@PathVariable @Positive Long id,
+		@RequestBody @Valid UpdateConcertRequest request
+	) {
+		long updatedId = updateConcertUseCase.execute(id, request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.UPDATE_CONCERT.name(), UpdatedDto.from(updatedId))
+		);
 	}
 }

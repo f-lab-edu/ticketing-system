@@ -10,6 +10,7 @@ import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertReposit
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.repository.ConcertJpaRepository;
 import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertEntity;
+import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
 import co.kr.ticketing.adminconcert.place.repository.PlaceJpaRepository;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
 import lombok.AccessLevel;
@@ -36,5 +37,16 @@ public class ConcertAdapter implements ConcertRepository {
 			.orElseThrow(() -> new ResourceNotFoundException("place", concert.place().id()));
 
 		return concertJpaRepository.save(ConcertEntity.from(concert, placeEntity)).getId();
+	}
+
+	@Override
+	@Transactional
+	public long update(long id, UpdateConcertDto updateDto) {
+		ConcertEntity concertEntity = concertJpaRepository.findById(id)
+			.orElseThrow(() -> new ResourceNotFoundException("concert", id));
+
+		concertEntity.update(updateDto);
+
+		return concertEntity.getId();
 	}
 }
