@@ -97,4 +97,16 @@ public class ConcertSeatEntity {
 			.state(concertSeat.state())
 			.build();
 	}
+
+	public ConcertSeat toModel() {
+		return ConcertSeat.builder()
+			.id(id)
+			.grade(grade)
+			.price(price)
+			.columnNum(columnNum)
+			.rowNum(rowNum)
+			.floor(floor)
+			.state(state)
+			.build();
+	}
 }

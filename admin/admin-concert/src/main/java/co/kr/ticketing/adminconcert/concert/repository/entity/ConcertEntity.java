@@ -126,4 +126,21 @@ public class ConcertEntity {
 			.seatEntities(concert.seats().stream().map(ConcertSeatEntity::from).toList())
 			.build();
 	}
+
+	public Concert toModel() {
+		return Concert.builder()
+			.id(id)
+			.name(name)
+			.detailInfo(detailInfo)
+			.runningHour(runningHour)
+			.runningMinute(runningMinute)
+			.state(state)
+			.ticketingStartTime(ticketingStartTime)
+			.lastRunningEndTime(lastRunningEndTime)
+			.openTime(openTime)
+			.place(placeEntity.toModel())
+			.rounds(roundEntities.stream().map(RoundEntity::toModel).toList())
+			.seats(seatEntities.stream().map(ConcertSeatEntity::toModel).toList())
+			.build();
+	}
 }

@@ -66,4 +66,11 @@ public class RoundEntity {
 			.startDateTime(round.startDateTime())
 			.build();
 	}
+
+	public Round toModel() {
+		return Round.builder()
+			.id(id)
+			.startDateTime(startDateTime)
+			.build();
+	}
 }
