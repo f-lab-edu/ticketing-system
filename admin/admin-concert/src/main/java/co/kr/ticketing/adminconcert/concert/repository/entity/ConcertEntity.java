@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
+import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -142,5 +143,12 @@ public class ConcertEntity {
 			.rounds(roundEntities.stream().map(RoundEntity::toModel).toList())
 			.seats(seatEntities.stream().map(ConcertSeatEntity::toModel).toList())
 			.build();
+	}
+
+	public void update(UpdateConcertDto updateDto) {
+		this.name = updateDto.name();
+		this.detailInfo = updateDto.detailInfo();
+		this.runningHour = updateDto.runningHour();
+		this.runningMinute = updateDto.runningMinute();
 	}
 }

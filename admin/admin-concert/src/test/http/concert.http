@@ -38,4 +38,13 @@ Content-Type: application/json
   ]
 }
 
-###
+### update concert basic info
+PATCH http://localhost:8081/concerts/1
+Content-Type: application/json
+
+{
+  "name": "올림픽공원에서 하는 콘서트2",
+  "detailInfo": "콘서트에 대한 상세정보2",
+  "runningHour": 3,
+  "runningMinute": 10
+}
