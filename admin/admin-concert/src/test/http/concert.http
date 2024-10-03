@@ -1,0 +1,38 @@
+### create concert
+POST http://localhost:8081/concerts
+Content-Type: application/json
+
+{
+  "name": "올림픽공원에서 하는 콘서트",
+  "detailInfo": "콘서트에 대한 상세정보",
+  "runningHour": 2,
+  "runningMinute": 30,
+  "ticketingStartTime": "2024-12-01T19:00:00",
+  "rounds": [
+    {
+      "startDateTime": "2024-12-15T19:00:00"
+    },
+    {
+      "startDateTime": "2024-12-16T19:00:00"
+    }
+  ],
+  "placeId": 1,
+  "seats": [
+    {
+      "grade": "S",
+      "price": 150000,
+      "columnNum": 1,
+      "rowNum": 1,
+      "floor": 1
+    },
+    {
+      "grade": "A",
+      "price": 100000,
+      "columnNum": 1,
+      "rowNum": 2,
+      "floor": 1
+    }
+  ]
+}
+
+###
