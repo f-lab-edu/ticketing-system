@@ -49,4 +49,10 @@ public class ConcertService {
 
 		return concertRepository.setOpenTime(newConcert);
 	}
+
+	public long setTicketingStartTime(Concert concert, LocalDateTime ticketingStartTime) {
+		Concert newConcert = concert.setTicketingStartTime(ticketingStartTime);
+
+		return concertRepository.setTicketingStartTime(newConcert);
+	}
 }

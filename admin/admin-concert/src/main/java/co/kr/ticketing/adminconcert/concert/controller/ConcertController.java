@@ -16,12 +16,14 @@ import co.kr.ticketing.adminconcert.common.dto.ResponseDto;
 import co.kr.ticketing.adminconcert.common.dto.UpdatedDto;
 import co.kr.ticketing.adminconcert.concert.controller.request.CreateConcertRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.SetOpenTimeRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.SetTicketingStartTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertResponseCode;
 import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertResponse;
 import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.CreateConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetOpenTimeUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.SetTicketingStartTime;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdateConcertUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
@@ -39,6 +41,7 @@ public class ConcertController {
 	GetConcertUseCase getConcertUseCase;
 	UpdateConcertUseCase updateConcertUseCase;
 	SetOpenTimeUseCase setOpenTimeUseCase;
+	SetTicketingStartTime setTicketingStartTime;
 
 	@PostMapping
 	public ResponseEntity<ResponseDto<CreatedDto>> createConcert(@RequestBody @Valid CreateConcertRequest request) {
@@ -75,6 +78,18 @@ public class ConcertController {
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(ConcertResponseCode.SET_CONCERT_OPEN_TIME.name(), UpdatedDto.from(updatedId))
+		);
+	}
+
+	@PutMapping("/{id}/ticketing-start-time")
+	public ResponseEntity<ResponseDto<UpdatedDto>> setTicketingStartTime(
+		@PathVariable @Positive Long id,
+		@RequestBody @Valid SetTicketingStartTimeRequest request
+	) {
+		long updatedId = setTicketingStartTime.execute(id, request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.SET_CONCERT_TICKETING_START_TIME.name(), UpdatedDto.from(updatedId))
 		);
 	}
 }

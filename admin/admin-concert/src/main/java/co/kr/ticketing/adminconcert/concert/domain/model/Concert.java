@@ -30,8 +30,8 @@ public record Concert(
 		if (!this.state.isSetOpenTimeState() ||
 			openTime.isBefore(LocalDateTime.now()) ||
 			(ticketingStartTime != null && ticketingStartTime.isBefore(openTime))) {
-			
-			throw new BadRequestException("오픈 시간을 설정할 수 없습니다");
+
+			throw new BadRequestException("오픈 시간을 설정할 수 없습니다. 다시 확인해주세요");
 		}
 
 		return Concert.builder()
@@ -44,6 +44,30 @@ public record Concert(
 			.ticketingStartTime(this.ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
 			.openTime(openTime)
+			.rounds(this.rounds)
+			.place(this.place)
+			.seats(List.copyOf(seats))
+			.build();
+	}
+
+	public Concert setTicketingStartTime(LocalDateTime ticketingStartTime) {
+		if (!this.state.isSetTicketingTimeState() ||
+			ticketingStartTime.isBefore(LocalDateTime.now()) ||
+			(openTime != null && this.ticketingStartTime.isBefore(openTime))) {
+
+			throw new BadRequestException("예매 시작 시간을 설정할 수 없습니다. 다시 확인해주세요");
+		}
+
+		return Concert.builder()
+			.id(this.id)
+			.name(this.name)
+			.detailInfo(this.detailInfo)
+			.runningHour(this.runningHour)
+			.runningMinute(this.runningMinute)
+			.state(this.state)
+			.ticketingStartTime(ticketingStartTime)
+			.lastRunningEndTime(this.lastRunningEndTime)
+			.openTime(this.openTime)
 			.rounds(this.rounds)
 			.place(this.place)
 			.seats(List.copyOf(seats))

@@ -60,4 +60,15 @@ public class ConcertAdapter implements ConcertRepository {
 
 		return concertEntity.getId();
 	}
+
+	@Override
+	@Transactional
+	public long setTicketingStartTime(Concert concert) {
+		ConcertEntity concertEntity = concertJpaRepository.findById(concert.id())
+			.orElseThrow(() -> new ResourceNotFoundException("concert", concert.id()));
+
+		concertEntity.setTicketingStartTime(concert.ticketingStartTime());
+
+		return concertEntity.getId();
+	}
 }
