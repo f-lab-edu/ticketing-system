@@ -13,6 +13,11 @@ Content-Type: application/json
       "columnNum": 1,
       "rowNum": 1,
       "floor": 1
+    },
+    {
+      "columnNum": 1,
+      "rowNum": 2,
+      "floor": 1
     }
   ]
 }

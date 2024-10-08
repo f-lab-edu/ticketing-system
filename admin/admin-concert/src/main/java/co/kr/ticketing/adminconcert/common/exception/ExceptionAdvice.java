@@ -21,10 +21,18 @@ public class ExceptionAdvice {
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public ResponseEntity<ResponseDto<String>> customException(MethodArgumentNotValidException exception) {
+	public ResponseEntity<ResponseDto<String>> methodArgumentNotValidException(
+		MethodArgumentNotValidException exception) {
 		HttpStatus badRequest = HttpStatus.BAD_REQUEST;
 		ResponseDto<String> responseDto = new ResponseDto<>(badRequest.toString(), "요청 값이 잘 못 됐습니다");
 		log.error("MethodArgumentNotValidException 발생 : message: {}", exception.getMessage());
 		return new ResponseEntity<>(responseDto, badRequest);
+	}
+
+	@ExceptionHandler(BadRequestException.class)
+	public ResponseEntity<ResponseDto<String>> badRequestException(BadRequestException exception) {
+		ResponseDto<String> responseDto = new ResponseDto<>(exception.getCode(), exception.getMessage());
+		log.error("BadRequestException 발생 : message: {}", exception.getMessage());
+		return new ResponseEntity<>(responseDto, exception.getStatus());
 	}
 }
