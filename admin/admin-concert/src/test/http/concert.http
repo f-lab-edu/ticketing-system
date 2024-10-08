@@ -48,3 +48,12 @@ Content-Type: application/json
   "runningHour": 3,
   "runningMinute": 10
 }
+
+
+### update concert open time
+PUT http://localhost:8081/concerts/1/open-time
+Content-Type: application/json
+
+{
+  "openTime": "2024-12-01T18:00:00"
+}

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +15,14 @@ import co.kr.ticketing.adminconcert.common.dto.CreatedDto;
 import co.kr.ticketing.adminconcert.common.dto.ResponseDto;
 import co.kr.ticketing.adminconcert.common.dto.UpdatedDto;
 import co.kr.ticketing.adminconcert.concert.controller.request.CreateConcertRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.SetOpenTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertResponseCode;
 import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertResponse;
-import co.kr.ticketing.adminconcert.concert.usecase.CreateConcertUseCase;
-import co.kr.ticketing.adminconcert.concert.usecase.GetConcertUseCase;
-import co.kr.ticketing.adminconcert.concert.usecase.UpdateConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.CreateConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.SetOpenTimeUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdateConcertUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -35,6 +38,7 @@ public class ConcertController {
 	CreateConcertUseCase createConcertUseCase;
 	GetConcertUseCase getConcertUseCase;
 	UpdateConcertUseCase updateConcertUseCase;
+	SetOpenTimeUseCase setOpenTimeUseCase;
 
 	@PostMapping
 	public ResponseEntity<ResponseDto<CreatedDto>> createConcert(@RequestBody @Valid CreateConcertRequest request) {
@@ -59,6 +63,18 @@ public class ConcertController {
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(ConcertResponseCode.UPDATE_CONCERT.name(), UpdatedDto.from(updatedId))
+		);
+	}
+
+	@PutMapping("/{id}/open-time")
+	public ResponseEntity<ResponseDto<UpdatedDto>> setOpenTime(
+		@PathVariable @Positive Long id,
+		@RequestBody @Valid SetOpenTimeRequest request
+	) {
+		long updatedId = setOpenTimeUseCase.execute(id, request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.SET_CONCERT_OPEN_TIME.name(), UpdatedDto.from(updatedId))
 		);
 	}
 }

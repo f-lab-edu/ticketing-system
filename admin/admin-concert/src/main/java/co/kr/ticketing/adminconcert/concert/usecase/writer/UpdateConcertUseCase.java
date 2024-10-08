@@ -1,4 +1,4 @@
-package co.kr.ticketing.adminconcert.concert.usecase;
+package co.kr.ticketing.adminconcert.concert.usecase.writer;
 
 import org.springframework.stereotype.Service;
 
