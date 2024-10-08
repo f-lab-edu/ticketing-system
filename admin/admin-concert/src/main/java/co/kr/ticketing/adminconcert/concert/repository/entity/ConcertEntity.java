@@ -155,4 +155,8 @@ public class ConcertEntity {
 	public void setOpenTime(LocalDateTime openTime) {
 		this.openTime = openTime;
 	}
+
+	public void setTicketingStartTime(LocalDateTime ticketingStartTime) {
+		this.ticketingStartTime = ticketingStartTime;
+	}
 }

@@ -57,3 +57,12 @@ Content-Type: application/json
 {
   "openTime": "2024-12-01T18:00:00"
 }
+
+
+### update concert ticketing start time
+PUT http://localhost:8081/concerts/1/ticketing-start-time
+Content-Type: application/json
+
+{
+  "ticketingStartTime": "2024-12-10T18:00:00"
+}
