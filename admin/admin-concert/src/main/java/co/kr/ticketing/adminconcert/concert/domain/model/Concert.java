@@ -44,9 +44,9 @@ public record Concert(
 			.ticketingStartTime(this.ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
 			.openTime(openTime)
-			.rounds(this.rounds)
+			.rounds(List.copyOf(this.rounds))
 			.place(this.place)
-			.seats(List.copyOf(seats))
+			.seats(List.copyOf(this.seats))
 			.build();
 	}
 
@@ -68,9 +68,41 @@ public record Concert(
 			.ticketingStartTime(ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
 			.openTime(this.openTime)
-			.rounds(this.rounds)
+			.rounds(List.copyOf(this.rounds))
 			.place(this.place)
-			.seats(List.copyOf(seats))
+			.seats(List.copyOf(this.seats))
+			.build();
+	}
+
+	public Concert setRounds(List<Round> rounds) {
+		if (!this.state.isSetRoundsState()
+
+			|| rounds.stream().map(Round::startDateTime).anyMatch(time -> time.isBefore(LocalDateTime.now()))
+
+			|| (ticketingStartTime != null && rounds.stream()
+			.map(Round::startDateTime)
+			.anyMatch(time -> time.isBefore(ticketingStartTime)))
+
+			|| (openTime != null && rounds.stream()
+			.map(Round::startDateTime)
+			.anyMatch(time -> time.isBefore(openTime)))
+		) {
+			throw new BadRequestException("콘서트 회차 정보를 수정할 수 없습니다. 다시 확인해주세요");
+		}
+
+		return Concert.builder()
+			.id(this.id)
+			.name(this.name)
+			.detailInfo(this.detailInfo)
+			.runningHour(this.runningHour)
+			.runningMinute(this.runningMinute)
+			.state(this.state)
+			.ticketingStartTime(this.ticketingStartTime)
+			.lastRunningEndTime(this.lastRunningEndTime)
+			.openTime(this.openTime)
+			.rounds(List.copyOf(rounds))
+			.place(this.place)
+			.seats(List.copyOf(this.seats))
 			.build();
 	}
 }

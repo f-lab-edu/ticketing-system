@@ -29,6 +29,7 @@ import jakarta.persistence.OneToMany;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -59,8 +60,10 @@ public class ConcertEntity {
 	@Enumerated(EnumType.STRING)
 	private CONCERT_STATE state;
 
+	@Setter
 	private LocalDateTime ticketingStartTime;
 	private LocalDateTime lastRunningEndTime;
+	@Setter
 	private LocalDateTime openTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -150,13 +153,5 @@ public class ConcertEntity {
 		this.detailInfo = updateDto.detailInfo();
 		this.runningHour = updateDto.runningHour();
 		this.runningMinute = updateDto.runningMinute();
-	}
-
-	public void setOpenTime(LocalDateTime openTime) {
-		this.openTime = openTime;
-	}
-
-	public void setTicketingStartTime(LocalDateTime ticketingStartTime) {
-		this.ticketingStartTime = ticketingStartTime;
 	}
 }

@@ -10,6 +10,7 @@ import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertReposit
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.repository.ConcertJpaRepository;
 import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertEntity;
+import co.kr.ticketing.adminconcert.concert.repository.entity.RoundEntity;
 import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
 import co.kr.ticketing.adminconcert.place.repository.PlaceJpaRepository;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
@@ -68,6 +69,17 @@ public class ConcertAdapter implements ConcertRepository {
 			.orElseThrow(() -> new ResourceNotFoundException("concert", concert.id()));
 
 		concertEntity.setTicketingStartTime(concert.ticketingStartTime());
+
+		return concertEntity.getId();
+	}
+
+	@Override
+	@Transactional
+	public long modifyRounds(Concert concert) {
+		ConcertEntity concertEntity = concertJpaRepository.findById(concert.id())
+			.orElseThrow(() -> new ResourceNotFoundException("concert", concert.id()));
+
+		concertEntity.setRoundEntities(concert.rounds().stream().map(RoundEntity::from).toList());
 
 		return concertEntity.getId();
 	}
