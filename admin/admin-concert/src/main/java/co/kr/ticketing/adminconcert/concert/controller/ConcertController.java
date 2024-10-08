@@ -19,6 +19,7 @@ import co.kr.ticketing.adminconcert.concert.controller.request.ModifyRoundsReque
 import co.kr.ticketing.adminconcert.concert.controller.request.SetOpenTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.SetTicketingStartTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.UpdatePlaceRequest;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertResponseCode;
 import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertResponse;
 import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertUseCase;
@@ -27,6 +28,7 @@ import co.kr.ticketing.adminconcert.concert.usecase.writer.ModifyRoundsUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetOpenTimeUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetTicketingStartTime;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdateConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdatePlaceUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -45,6 +47,7 @@ public class ConcertController {
 	SetOpenTimeUseCase setOpenTimeUseCase;
 	SetTicketingStartTime setTicketingStartTime;
 	ModifyRoundsUseCase modifyRoundsUseCase;
+	UpdatePlaceUseCase updatePlaceUseCase;
 
 	@PostMapping
 	public ResponseEntity<ResponseDto<CreatedDto>> createConcert(@RequestBody @Valid CreateConcertRequest request) {
@@ -105,6 +108,18 @@ public class ConcertController {
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(ConcertResponseCode.MODIFY_ROUNDS.name(), UpdatedDto.from(updatedId))
+		);
+	}
+
+	@PutMapping("/{id}/place")
+	public ResponseEntity<ResponseDto<UpdatedDto>> updatePlace(
+		@PathVariable @Positive Long id,
+		@RequestBody @Valid UpdatePlaceRequest request
+	) {
+		long updatedId = updatePlaceUseCase.execute(id, request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.UPDATE_CONCERT_PLACE.name(), UpdatedDto.from(updatedId))
 		);
 	}
 }

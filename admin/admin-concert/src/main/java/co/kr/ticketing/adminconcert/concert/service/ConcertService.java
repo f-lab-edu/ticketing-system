@@ -10,6 +10,7 @@ import co.kr.ticketing.adminconcert.common.exception.ResourceNotFoundException;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertErrorResponseCode;
 import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertRepository;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
 import co.kr.ticketing.adminconcert.concert.service.dto.CreateConcertDto;
 import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
@@ -62,5 +63,11 @@ public class ConcertService {
 		Concert newConcert = concert.setRounds(rounds);
 
 		return concertRepository.modifyRounds(newConcert);
+	}
+
+	public long updatePlace(Concert concert, Place place, List<ConcertSeat> seatModel) {
+		Concert newConcert = concert.updatePlace(place, seatModel);
+
+		return concertRepository.updatePlace(newConcert);
 	}
 }
