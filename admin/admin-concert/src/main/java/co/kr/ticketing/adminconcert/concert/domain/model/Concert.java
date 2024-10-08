@@ -105,4 +105,21 @@ public record Concert(
 			.seats(List.copyOf(this.seats))
 			.build();
 	}
+
+	public Concert updatePlace(Place place, List<ConcertSeat> seats) {
+		return Concert.builder()
+			.id(this.id)
+			.name(this.name)
+			.detailInfo(this.detailInfo)
+			.runningHour(this.runningHour)
+			.runningMinute(this.runningMinute)
+			.state(this.state)
+			.ticketingStartTime(this.ticketingStartTime)
+			.lastRunningEndTime(this.lastRunningEndTime)
+			.openTime(this.openTime)
+			.rounds(List.copyOf(rounds))
+			.place(place)
+			.seats(List.copyOf(seats))
+			.build();
+	}
 }

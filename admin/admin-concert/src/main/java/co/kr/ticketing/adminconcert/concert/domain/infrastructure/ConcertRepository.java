@@ -17,4 +17,6 @@ public interface ConcertRepository {
 	long setTicketingStartTime(Concert concert);
 
 	long modifyRounds(Concert concert);
+
+	long updatePlace(Concert concert);
 }

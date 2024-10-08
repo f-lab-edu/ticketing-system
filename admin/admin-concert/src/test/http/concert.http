@@ -66,3 +66,32 @@ Content-Type: application/json
 {
   "ticketingStartTime": "2024-12-10T18:00:00"
 }
+
+### update concert round
+PUT http://localhost:8081/concerts/1/rounds
+Content-Type: application/json
+
+{
+  "rounds": [
+    {
+      "startDateTime": "2024-12-20T19:00:00"
+    }
+  ]
+}
+
+### update concert place
+PUT http://localhost:8081/concerts/1/place
+Content-Type: application/json
+
+{
+  "placeId": 2,
+  "seats": [
+    {
+      "grade": "B",
+      "price": 50000,
+      "columnNum": 1,
+      "rowNum": 1,
+      "floor": 1
+    }
+  ]
+}

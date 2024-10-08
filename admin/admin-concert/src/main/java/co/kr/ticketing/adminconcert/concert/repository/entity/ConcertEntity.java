@@ -154,4 +154,9 @@ public class ConcertEntity {
 		this.runningHour = updateDto.runningHour();
 		this.runningMinute = updateDto.runningMinute();
 	}
+
+	public void updatePlace(PlaceEntity placeEntity, List<ConcertSeatEntity> concertSeatEntities) {
+		this.placeEntity = placeEntity;
+		setSeatEntities(concertSeatEntities);
+	}
 }
