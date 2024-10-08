@@ -151,4 +151,8 @@ public class ConcertEntity {
 		this.runningHour = updateDto.runningHour();
 		this.runningMinute = updateDto.runningMinute();
 	}
+
+	public void setOpenTime(LocalDateTime openTime) {
+		this.openTime = openTime;
+	}
 }

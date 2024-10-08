@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import co.kr.ticketing.adminconcert.concert.service.dto.CreateConcertDto;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,13 +19,17 @@ public record CreateConcertRequest(
 	Integer runningMinute,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
+	@Valid
 	@NotEmpty
 	List<CreateConcertRoundRequest> rounds,
 	@NotNull
 	Long placeId,
+	@Valid
+	@NotEmpty
 	List<CreateConcertSeatRequest> seats
 ) {
 	public record CreateConcertRoundRequest(
+		@NotNull
 		LocalDateTime startDateTime
 	) {
 		public CreateConcertDto.CreateRoundDto toDto() {
@@ -35,11 +40,16 @@ public record CreateConcertRequest(
 	}
 
 	public record CreateConcertSeatRequest(
+		@NotBlank
 		String grade,
-		int price,
-		int columnNum,
-		int rowNum,
-		int floor
+		@NotNull
+		Integer price,
+		@NotNull
+		Integer columnNum,
+		@NotNull
+		Integer rowNum,
+		@NotNull
+		Integer floor
 	) {
 		public CreateConcertDto.CreateConcertSeatDto toDto() {
 			return CreateConcertDto.CreateConcertSeatDto.builder()

@@ -1,5 +1,7 @@
 package co.kr.ticketing.adminconcert.concert.service;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 
 import co.kr.ticketing.adminconcert.common.exception.BadRequestException;
@@ -40,5 +42,11 @@ public class ConcertService {
 		}
 
 		return concertRepository.update(id, updateDto);
+	}
+
+	public long setOpenTime(Concert concert, LocalDateTime openTime) {
+		Concert newConcert = concert.setOpenTime(openTime);
+
+		return concertRepository.setOpenTime(newConcert);
 	}
 }

@@ -11,4 +11,7 @@ public interface ConcertRepository {
 	long create(Concert concert);
 
 	long update(long id, UpdateConcertDto updateDto);
+
+	long setOpenTime(Concert concert);
+
 }
