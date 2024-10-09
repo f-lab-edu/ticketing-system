@@ -26,7 +26,7 @@ import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.CreateConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.ModifyRoundsUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetOpenTimeUseCase;
-import co.kr.ticketing.adminconcert.concert.usecase.writer.SetTicketingStartTime;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.SetTicketingStartTimeUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdateConcertUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.UpdatePlaceUseCase;
 import jakarta.validation.Valid;
@@ -45,7 +45,7 @@ public class ConcertController {
 	GetConcertUseCase getConcertUseCase;
 	UpdateConcertUseCase updateConcertUseCase;
 	SetOpenTimeUseCase setOpenTimeUseCase;
-	SetTicketingStartTime setTicketingStartTime;
+	SetTicketingStartTimeUseCase setTicketingStartTimeUseCase;
 	ModifyRoundsUseCase modifyRoundsUseCase;
 	UpdatePlaceUseCase updatePlaceUseCase;
 
@@ -92,7 +92,7 @@ public class ConcertController {
 		@PathVariable @Positive Long id,
 		@RequestBody @Valid SetTicketingStartTimeRequest request
 	) {
-		long updatedId = setTicketingStartTime.execute(id, request);
+		long updatedId = setTicketingStartTimeUseCase.execute(id, request);
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(ConcertResponseCode.SET_CONCERT_TICKETING_START_TIME.name(), UpdatedDto.from(updatedId))
