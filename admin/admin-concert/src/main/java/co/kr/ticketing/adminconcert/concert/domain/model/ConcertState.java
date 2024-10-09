@@ -9,12 +9,12 @@ public enum ConcertState {
 	CLOSE(false, false, false);
 
 	private final boolean setOpenTimeState;
-	private final boolean isSetTicketingTimeState;
-	private final boolean isSetRoundsState;
+	private final boolean setTicketingTimeState;
+	private final boolean setRoundsState;
 
-	ConcertState(boolean isSetOpenTimeState, boolean isSetTicketingTimeState, boolean isSetRoundsState) {
-		this.setOpenTimeState = isSetOpenTimeState;
-		this.isSetTicketingTimeState = isSetTicketingTimeState;
-		this.isSetRoundsState = isSetRoundsState;
+	ConcertState(boolean setOpenTimeState, boolean setTicketingTimeState, boolean setRoundsState) {
+		this.setOpenTimeState = setOpenTimeState;
+		this.setTicketingTimeState = setTicketingTimeState;
+		this.setRoundsState = setRoundsState;
 	}
 }
