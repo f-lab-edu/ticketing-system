@@ -8,8 +8,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_SEAT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeatState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -58,14 +58,14 @@ public class ConcertSeatEntity {
 	@Column(nullable = false)
 	@ColumnDefault("'EMPTY'")
 	@Enumerated(EnumType.STRING)
-	private CONCERT_SEAT_STATE state;
+	private ConcertSeatState state;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ConcertEntity concertEntity;
 
 	@Builder
 	public ConcertSeatEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String grade, Integer price,
-		Integer columnNum, Integer rowNum, Integer floor, CONCERT_SEAT_STATE state, ConcertEntity concertEntity) {
+		Integer columnNum, Integer rowNum, Integer floor, ConcertSeatState state, ConcertEntity concertEntity) {
 		this.id = id;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;

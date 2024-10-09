@@ -3,10 +3,10 @@ package co.kr.ticketing.adminconcert.concert.controller.response;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_SEAT_STATE;
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeatState;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
 import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import lombok.Builder;
@@ -17,7 +17,7 @@ public record GetConcertResponse(
 	String name,
 	String detailInfo,
 	int runningTime,
-	CONCERT_STATE state,
+	ConcertState state,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
 	List<RoundResponse> rounds,
@@ -60,7 +60,7 @@ public record GetConcertResponse(
 		int columnNum,
 		int rowNum,
 		int floor,
-		CONCERT_SEAT_STATE state
+		ConcertSeatState state
 	) {
 		public static ConcertSeatResponse from(ConcertSeat concertSeat) {
 			return ConcertSeatResponse.builder()
