@@ -10,8 +10,8 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -56,7 +56,7 @@ public class ConcertEntity {
 	@Column(nullable = false)
 	@ColumnDefault("'READY'")
 	@Enumerated(EnumType.STRING)
-	private CONCERT_STATE state;
+	private ConcertState state;
 
 	@Setter
 	private LocalDateTime ticketingStartTime;
@@ -74,7 +74,7 @@ public class ConcertEntity {
 
 	@Builder
 	public ConcertEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String name, String detailInfo,
-		Integer runningTime, CONCERT_STATE state, LocalDateTime ticketingStartTime,
+		Integer runningTime, ConcertState state, LocalDateTime ticketingStartTime,
 		LocalDateTime lastRunningEndTime, LocalDateTime openTime, PlaceEntity placeEntity,
 		List<RoundEntity> roundEntities, List<ConcertSeatEntity> seatEntities) {
 		this.id = id;

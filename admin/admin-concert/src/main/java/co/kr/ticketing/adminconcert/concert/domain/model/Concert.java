@@ -13,7 +13,7 @@ public record Concert(
 	String name,
 	String detailInfo,
 	int runningTime,
-	CONCERT_STATE state,
+	ConcertState state,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime lastRunningEndTime,
 	LocalDateTime openTime,
@@ -22,7 +22,7 @@ public record Concert(
 	List<ConcertSeat> seats
 ) {
 	@Builder
-	public Concert(Long id, String name, String detailInfo, int runningTime, CONCERT_STATE state,
+	public Concert(Long id, String name, String detailInfo, int runningTime, ConcertState state,
 		LocalDateTime ticketingStartTime, LocalDateTime lastRunningEndTime, LocalDateTime openTime, List<Round> rounds,
 		Place place, List<ConcertSeat> seats) {
 		if (rounds.isEmpty()) {
@@ -46,7 +46,7 @@ public record Concert(
 	}
 
 	public boolean isPossibleUpdate() {
-		return !state.equals(CONCERT_STATE.CLOSE);
+		return !state.equals(ConcertState.CLOSE);
 	}
 
 	public Concert setOpenTime(LocalDateTime openTime) {

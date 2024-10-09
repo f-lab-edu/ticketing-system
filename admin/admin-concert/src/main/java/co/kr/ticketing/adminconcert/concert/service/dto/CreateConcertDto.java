@@ -6,10 +6,10 @@ import java.util.List;
 
 import co.kr.ticketing.adminconcert.common.exception.BadRequestException;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertErrorResponseCode;
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_SEAT_STATE;
-import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeatState;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
 import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import co.kr.ticketing.adminconcert.place.domain.model.Seat;
@@ -52,7 +52,7 @@ public record CreateConcertDto(
 				.columnNum(columnNum)
 				.rowNum(rowNum)
 				.floor(floor)
-				.state(CONCERT_SEAT_STATE.EMPTY)
+				.state(ConcertSeatState.EMPTY)
 				.build();
 		}
 	}
@@ -64,7 +64,7 @@ public record CreateConcertDto(
 			.name(name)
 			.detailInfo(detailInfo)
 			.runningTime(runningTime)
-			.state(CONCERT_STATE.READY)
+			.state(ConcertState.READY)
 			.ticketingStartTime(ticketingStartTime)
 			.openTime(openTime)
 			.rounds(rounds.stream().map(CreateRoundDto::toModel).toList())
@@ -75,7 +75,7 @@ public record CreateConcertDto(
 			.seats(seats.stream().map(CreateConcertSeatDto::toModel).toList())
 			.build();
 	}
-	
+
 	private void validate(List<Seat> placeSeats) {
 		if (runningTime < 0) {
 			throw new BadRequestException(ConcertErrorResponseCode.CREATE_RUNNING_TIME_ERROR.name(),

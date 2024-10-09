@@ -10,6 +10,6 @@ public record ConcertSeat(
 	int columnNum,
 	int rowNum,
 	int floor,
-	CONCERT_SEAT_STATE state
+	ConcertSeatState state
 ) {
 }
