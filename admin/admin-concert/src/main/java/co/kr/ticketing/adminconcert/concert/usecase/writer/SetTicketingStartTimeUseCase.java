@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class SetTicketingStartTime {
+public class SetTicketingStartTimeUseCase {
 	ConcertService concertService;
 
 	public long execute(Long id, SetTicketingStartTimeRequest request) {
