@@ -3,6 +3,7 @@ package co.kr.ticketing.adminconcert.concert.usecase.writer;
 import org.springframework.stereotype.Service;
 
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
+import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.service.ConcertService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ public class UpdateConcertUseCase {
 	ConcertService concertService;
 
 	public long execute(Long id, UpdateConcertRequest request) {
-		return concertService.update(id, request.toDto());
+		Concert concert = concertService.get(id);
+
+		return concertService.update(request.toModel(concert));
 	}
 }

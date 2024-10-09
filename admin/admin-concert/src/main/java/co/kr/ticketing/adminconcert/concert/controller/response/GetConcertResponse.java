@@ -16,8 +16,7 @@ public record GetConcertResponse(
 	Long id,
 	String name,
 	String detailInfo,
-	int runningHour,
-	int runningMinute,
+	int runningTime,
 	CONCERT_STATE state,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
@@ -81,8 +80,7 @@ public record GetConcertResponse(
 			.id(concert.id())
 			.name(concert.name())
 			.detailInfo(concert.detailInfo())
-			.runningHour(concert.runningHour())
-			.runningMinute(concert.runningMinute())
+			.runningTime(concert.runningTime())
 			.state(concert.state())
 			.ticketingStartTime(concert.ticketingStartTime())
 			.openTime(concert.openTime())

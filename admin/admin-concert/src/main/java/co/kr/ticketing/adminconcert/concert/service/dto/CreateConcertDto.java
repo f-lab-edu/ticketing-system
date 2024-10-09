@@ -19,8 +19,7 @@ import lombok.Builder;
 public record CreateConcertDto(
 	String name,
 	String detailInfo,
-	Integer runningHour,
-	Integer runningMinute,
+	Integer runningTime,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
 	List<CreateRoundDto> rounds,
@@ -64,11 +63,9 @@ public record CreateConcertDto(
 		return Concert.builder()
 			.name(name)
 			.detailInfo(detailInfo)
-			.runningHour(runningHour)
-			.runningMinute(runningMinute)
+			.runningTime(runningTime)
 			.state(CONCERT_STATE.READY)
 			.ticketingStartTime(ticketingStartTime)
-			.lastRunningEndTime(calcLastRunningEndTime())
 			.openTime(openTime)
 			.rounds(rounds.stream().map(CreateRoundDto::toModel).toList())
 			.place(Place.builder()
@@ -78,26 +75,10 @@ public record CreateConcertDto(
 			.seats(seats.stream().map(CreateConcertSeatDto::toModel).toList())
 			.build();
 	}
-
-	private LocalDateTime calcLastRunningEndTime() {
-		if (rounds.isEmpty()) {
-			throw new BadRequestException(ConcertErrorResponseCode.CREATE_ROUNDS_ERROR.name(), "최소 1개의 콘서트 회차는 입력해주세요");
-		}
-
-		CreateRoundDto lastRound = rounds.get(rounds.size() - 1);
-		return lastRound.startDateTime
-			.plusHours(runningHour)
-			.plusMinutes(runningMinute);
-	}
-
+	
 	private void validate(List<Seat> placeSeats) {
-		if (runningHour < 0) {
-			throw new BadRequestException(ConcertErrorResponseCode.CREATE_RUNNING_HOUR_ERROR.name(),
-				"러닝타임은 0 이상만 가능합니다");
-		}
-
-		if (runningMinute < 0) {
-			throw new BadRequestException(ConcertErrorResponseCode.CREATE_RUNNING_MINUTE_ERROR.name(),
+		if (runningTime < 0) {
+			throw new BadRequestException(ConcertErrorResponseCode.CREATE_RUNNING_TIME_ERROR.name(),
 				"러닝타임은 0 이상만 가능합니다");
 		}
 

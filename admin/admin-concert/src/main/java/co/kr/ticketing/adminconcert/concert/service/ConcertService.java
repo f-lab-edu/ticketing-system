@@ -13,7 +13,6 @@ import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
 import co.kr.ticketing.adminconcert.concert.service.dto.CreateConcertDto;
-import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
 import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import co.kr.ticketing.adminconcert.place.service.PlaceService;
 import lombok.AccessLevel;
@@ -37,14 +36,12 @@ public class ConcertService {
 		return concertRepository.create(createDto.toModel(place.seats()));
 	}
 
-	public long update(long id, UpdateConcertDto updateDto) {
-		Concert concert = get(id);
-
+	public long update(Concert concert) {
 		if (!concert.isPossibleUpdate()) {
 			throw new BadRequestException(ConcertErrorResponseCode.NOT_POSSIBLE_UPDATE_STATE.name(), "수정 가능한 상태가 아닙니다");
 		}
 
-		return concertRepository.update(id, updateDto);
+		return concertRepository.update(concert);
 	}
 
 	public long setOpenTime(Concert concert, LocalDateTime openTime) {

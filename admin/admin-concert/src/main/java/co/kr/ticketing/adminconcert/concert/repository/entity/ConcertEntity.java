@@ -12,7 +12,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import co.kr.ticketing.adminconcert.concert.domain.model.CONCERT_STATE;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
-import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -52,8 +51,7 @@ public class ConcertEntity {
 	@Column(nullable = false)
 	private String detailInfo;
 
-	private Integer runningHour;
-	private Integer runningMinute;
+	private Integer runningTime;
 
 	@Column(nullable = false)
 	@ColumnDefault("'READY'")
@@ -76,7 +74,7 @@ public class ConcertEntity {
 
 	@Builder
 	public ConcertEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String name, String detailInfo,
-		Integer runningHour, Integer runningMinute, CONCERT_STATE state, LocalDateTime ticketingStartTime,
+		Integer runningTime, CONCERT_STATE state, LocalDateTime ticketingStartTime,
 		LocalDateTime lastRunningEndTime, LocalDateTime openTime, PlaceEntity placeEntity,
 		List<RoundEntity> roundEntities, List<ConcertSeatEntity> seatEntities) {
 		this.id = id;
@@ -84,8 +82,7 @@ public class ConcertEntity {
 		this.updatedAt = updatedAt;
 		this.name = name;
 		this.detailInfo = detailInfo;
-		this.runningHour = runningHour;
-		this.runningMinute = runningMinute;
+		this.runningTime = runningTime;
 		this.state = state;
 		this.ticketingStartTime = ticketingStartTime;
 		this.lastRunningEndTime = lastRunningEndTime;
@@ -119,8 +116,7 @@ public class ConcertEntity {
 		return ConcertEntity.builder()
 			.name(concert.name())
 			.detailInfo(concert.detailInfo())
-			.runningHour(concert.runningHour())
-			.runningMinute(concert.runningMinute())
+			.runningTime(concert.runningTime())
 			.state(concert.state())
 			.ticketingStartTime(concert.ticketingStartTime())
 			.lastRunningEndTime(concert.lastRunningEndTime())
@@ -136,8 +132,7 @@ public class ConcertEntity {
 			.id(id)
 			.name(name)
 			.detailInfo(detailInfo)
-			.runningHour(runningHour)
-			.runningMinute(runningMinute)
+			.runningTime(runningTime)
 			.state(state)
 			.ticketingStartTime(ticketingStartTime)
 			.lastRunningEndTime(lastRunningEndTime)
@@ -148,11 +143,11 @@ public class ConcertEntity {
 			.build();
 	}
 
-	public void update(UpdateConcertDto updateDto) {
-		this.name = updateDto.name();
-		this.detailInfo = updateDto.detailInfo();
-		this.runningHour = updateDto.runningHour();
-		this.runningMinute = updateDto.runningMinute();
+	public void update(Concert concert) {
+		this.name = concert.name();
+		this.detailInfo = concert.detailInfo();
+		this.runningTime = concert.runningTime();
+		this.lastRunningEndTime = concert.lastRunningEndTime();
 	}
 
 	public void updatePlace(PlaceEntity placeEntity, List<ConcertSeatEntity> concertSeatEntities) {
