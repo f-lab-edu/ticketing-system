@@ -1,6 +1,8 @@
 package co.kr.ticketing.adminconcert.concert.controller.request;
 
-import co.kr.ticketing.adminconcert.concert.service.dto.UpdateConcertDto;
+import java.util.List;
+
+import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
@@ -9,16 +11,20 @@ public record UpdateConcertRequest(
 	String name,
 	String detailInfo,
 	@NotNull
-	int runningHour,
-	@NotNull
-	int runningMinute
+	int runningTime
 ) {
-	public UpdateConcertDto toDto() {
-		return UpdateConcertDto.builder()
+	public Concert toModel(Concert concert) {
+		return Concert.builder()
+			.id(concert.id())
 			.name(name)
 			.detailInfo(detailInfo)
-			.runningHour(runningHour)
-			.runningMinute(runningMinute)
+			.runningTime(runningTime)
+			.state(concert.state())
+			.ticketingStartTime(concert.ticketingStartTime())
+			.openTime(concert.openTime())
+			.rounds(List.copyOf(concert.rounds()))
+			.place(concert.place())
+			.seats(List.copyOf(concert.seats()))
 			.build();
 	}
 }

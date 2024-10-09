@@ -14,9 +14,7 @@ public record CreateConcertRequest(
 	String name,
 	String detailInfo,
 	@NotNull
-	Integer runningHour,
-	@NotNull
-	Integer runningMinute,
+	Integer runningTime,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
 	@Valid
@@ -66,8 +64,7 @@ public record CreateConcertRequest(
 		return CreateConcertDto.builder()
 			.name(name)
 			.detailInfo(detailInfo)
-			.runningHour(runningHour)
-			.runningMinute(runningMinute)
+			.runningTime(runningTime)
 			.ticketingStartTime(ticketingStartTime)
 			.openTime(openTime)
 			.rounds(rounds.stream().map(CreateConcertRoundRequest::toDto).toList())

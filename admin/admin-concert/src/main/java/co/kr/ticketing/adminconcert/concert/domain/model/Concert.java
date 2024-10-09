@@ -4,16 +4,15 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import co.kr.ticketing.adminconcert.common.exception.BadRequestException;
+import co.kr.ticketing.adminconcert.concert.controller.response.ConcertErrorResponseCode;
 import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import lombok.Builder;
 
-@Builder
 public record Concert(
 	Long id,
 	String name,
 	String detailInfo,
-	int runningHour,
-	int runningMinute,
+	int runningTime,
 	CONCERT_STATE state,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime lastRunningEndTime,
@@ -22,6 +21,30 @@ public record Concert(
 	Place place,
 	List<ConcertSeat> seats
 ) {
+	@Builder
+	public Concert(Long id, String name, String detailInfo, int runningTime, CONCERT_STATE state,
+		LocalDateTime ticketingStartTime, LocalDateTime lastRunningEndTime, LocalDateTime openTime, List<Round> rounds,
+		Place place, List<ConcertSeat> seats) {
+		if (rounds.isEmpty()) {
+			throw new BadRequestException(ConcertErrorResponseCode.CREATE_ROUNDS_ERROR.name(), "최소 1개의 콘서트 회차는 입력해주세요");
+		}
+
+		Round lastRound = rounds.get(rounds.size() - 1);
+		this.lastRunningEndTime = lastRound.startDateTime().plusMinutes(runningTime);
+
+		this.id = id;
+		this.name = name;
+		this.detailInfo = detailInfo;
+		this.runningTime = runningTime;
+		this.state = state;
+		this.ticketingStartTime = ticketingStartTime;
+
+		this.openTime = openTime;
+		this.rounds = rounds;
+		this.place = place;
+		this.seats = seats;
+	}
+
 	public boolean isPossibleUpdate() {
 		return !state.equals(CONCERT_STATE.CLOSE);
 	}
@@ -38,8 +61,7 @@ public record Concert(
 			.id(this.id)
 			.name(this.name)
 			.detailInfo(this.detailInfo)
-			.runningHour(this.runningHour)
-			.runningMinute(this.runningMinute)
+			.runningTime(this.runningTime)
 			.state(this.state)
 			.ticketingStartTime(this.ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
@@ -62,8 +84,7 @@ public record Concert(
 			.id(this.id)
 			.name(this.name)
 			.detailInfo(this.detailInfo)
-			.runningHour(this.runningHour)
-			.runningMinute(this.runningMinute)
+			.runningTime(this.runningTime)
 			.state(this.state)
 			.ticketingStartTime(ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
@@ -94,8 +115,7 @@ public record Concert(
 			.id(this.id)
 			.name(this.name)
 			.detailInfo(this.detailInfo)
-			.runningHour(this.runningHour)
-			.runningMinute(this.runningMinute)
+			.runningTime(this.runningTime)
 			.state(this.state)
 			.ticketingStartTime(this.ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
@@ -111,8 +131,7 @@ public record Concert(
 			.id(this.id)
 			.name(this.name)
 			.detailInfo(this.detailInfo)
-			.runningHour(this.runningHour)
-			.runningMinute(this.runningMinute)
+			.runningTime(this.runningTime)
 			.state(this.state)
 			.ticketingStartTime(this.ticketingStartTime)
 			.lastRunningEndTime(this.lastRunningEndTime)
