@@ -61,9 +61,10 @@ public class RoundEntity {
 		}
 	}
 
-	public static RoundEntity from(Round round) {
+	public static RoundEntity from(ConcertEntity concertEntity, Round round) {
 		return RoundEntity.builder()
 			.startDateTime(round.startDateTime())
+			.concertEntity(concertEntity)
 			.build();
 	}
 

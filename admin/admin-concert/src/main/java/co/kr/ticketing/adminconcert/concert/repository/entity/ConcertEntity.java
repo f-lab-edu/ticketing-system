@@ -13,7 +13,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -67,9 +66,9 @@ public class ConcertEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	private PlaceEntity placeEntity;
 
-	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY)
 	private final List<RoundEntity> roundEntities = new ArrayList<>();
-	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY)
 	private final List<ConcertSeatEntity> seatEntities = new ArrayList<>();
 
 	@Builder
@@ -94,22 +93,26 @@ public class ConcertEntity {
 
 	public void setRoundEntities(List<RoundEntity> roundEntities) {
 		this.roundEntities.clear();
-		this.roundEntities.addAll(roundEntities);
-		roundEntities.forEach(roundEntity -> {
-			if (roundEntity.getConcertEntity() != this) {
-				roundEntity.setConcertEntity(this);
-			}
-		});
+		if (roundEntities != null) {
+			this.roundEntities.addAll(roundEntities);
+			roundEntities.forEach(roundEntity -> {
+				if (roundEntity.getConcertEntity() != this) {
+					roundEntity.setConcertEntity(this);
+				}
+			});
+		}
 	}
 
 	public void setSeatEntities(List<ConcertSeatEntity> seatEntities) {
 		this.seatEntities.clear();
-		this.seatEntities.addAll(seatEntities);
-		seatEntities.forEach(seatEntity -> {
-			if (seatEntity.getConcertEntity() != this) {
-				seatEntity.setConcertEntity(this);
-			}
-		});
+		if (seatEntities != null) {
+			this.seatEntities.addAll(seatEntities);
+			seatEntities.forEach(seatEntity -> {
+				if (seatEntity.getConcertEntity() != this) {
+					seatEntity.setConcertEntity(this);
+				}
+			});
+		}
 	}
 
 	public static ConcertEntity from(Concert concert, PlaceEntity placeEntity) {
@@ -122,8 +125,6 @@ public class ConcertEntity {
 			.lastRunningEndTime(concert.lastRunningEndTime())
 			.openTime(concert.openTime())
 			.placeEntity(placeEntity)
-			.roundEntities(concert.rounds().stream().map(RoundEntity::from).toList())
-			.seatEntities(concert.seats().stream().map(ConcertSeatEntity::from).toList())
 			.build();
 	}
 
@@ -150,8 +151,7 @@ public class ConcertEntity {
 		this.lastRunningEndTime = concert.lastRunningEndTime();
 	}
 
-	public void updatePlace(PlaceEntity placeEntity, List<ConcertSeatEntity> concertSeatEntities) {
+	public void updatePlace(PlaceEntity placeEntity) {
 		this.placeEntity = placeEntity;
-		setSeatEntities(concertSeatEntities);
 	}
 }

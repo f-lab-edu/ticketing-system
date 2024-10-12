@@ -87,7 +87,7 @@ public class ConcertSeatEntity {
 		}
 	}
 
-	public static ConcertSeatEntity from(ConcertSeat concertSeat) {
+	public static ConcertSeatEntity from(ConcertEntity concertEntity, ConcertSeat concertSeat) {
 		return ConcertSeatEntity.builder()
 			.grade(concertSeat.grade())
 			.price(concertSeat.price())
@@ -95,6 +95,7 @@ public class ConcertSeatEntity {
 			.rowNum(concertSeat.rowNum())
 			.floor(concertSeat.floor())
 			.state(concertSeat.state())
+			.concertEntity(concertEntity)
 			.build();
 	}
 
