@@ -16,18 +16,18 @@ import co.kr.ticketing.adminconcert.place.domain.model.Seat;
 import lombok.Builder;
 
 @Builder
-public record CreateConcertDto(
+public record CreateConcertVo(
 	String name,
 	String detailInfo,
 	Integer runningTime,
 	LocalDateTime ticketingStartTime,
 	LocalDateTime openTime,
-	List<CreateRoundDto> rounds,
+	List<CreateRoundVo> rounds,
 	Long placeId,
-	List<CreateConcertSeatDto> seats
+	List<CreateConcertSeatVo> seats
 ) {
 	@Builder
-	public record CreateRoundDto(
+	public record CreateRoundVo(
 		LocalDateTime startDateTime
 	) {
 		public Round toModel() {
@@ -38,7 +38,7 @@ public record CreateConcertDto(
 	}
 
 	@Builder
-	public record CreateConcertSeatDto(
+	public record CreateConcertSeatVo(
 		String grade,
 		int price,
 		int columnNum,
@@ -67,12 +67,12 @@ public record CreateConcertDto(
 			.state(ConcertState.READY)
 			.ticketingStartTime(ticketingStartTime)
 			.openTime(openTime)
-			.rounds(rounds.stream().map(CreateRoundDto::toModel).toList())
+			.rounds(rounds.stream().map(CreateRoundVo::toModel).toList())
 			.place(Place.builder()
 				.id(placeId)
 				.seats(Collections.emptyList())
 				.build())
-			.seats(seats.stream().map(CreateConcertSeatDto::toModel).toList())
+			.seats(seats.stream().map(CreateConcertSeatVo::toModel).toList())
 			.build();
 	}
 
