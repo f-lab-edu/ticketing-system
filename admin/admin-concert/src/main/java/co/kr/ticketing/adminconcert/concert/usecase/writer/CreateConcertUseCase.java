@@ -15,6 +15,6 @@ public class CreateConcertUseCase {
 	ConcertService concertService;
 
 	public long execute(CreateConcertRequest request) {
-		return concertService.create(request.toDto());
+		return concertService.create(request.toCreateVo());
 	}
 }
