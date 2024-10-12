@@ -4,11 +4,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import co.kr.ticketing.adminconcert.common.exception.BadRequestException;
 import co.kr.ticketing.adminconcert.common.exception.ResourceNotFoundException;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertErrorResponseCode;
 import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertRepository;
+import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertSeatRepository;
+import co.kr.ticketing.adminconcert.concert.domain.infrastructure.RoundRepository;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
@@ -24,6 +27,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConcertService {
 	ConcertRepository concertRepository;
+	RoundRepository roundRepository;
+	ConcertSeatRepository concertSeatRepository;
 	PlaceService placeService;
 
 	public Concert get(Long id) {
@@ -31,9 +36,16 @@ public class ConcertService {
 			.orElseThrow(() -> new ResourceNotFoundException("concert", id));
 	}
 
+	@Transactional
 	public long create(CreateConcertDto createDto) {
 		Place place = placeService.get(createDto.placeId());
-		return concertRepository.create(createDto.toModel(place.seats()));
+		Concert toCreateConcert = createDto.toModel(place.seats());
+		long concertId = concertRepository.create(toCreateConcert);
+
+		roundRepository.create(concertId, toCreateConcert.rounds());
+		concertSeatRepository.create(concertId, toCreateConcert.seats());
+
+		return concertId;
 	}
 
 	public long update(Concert concert) {
@@ -56,15 +68,22 @@ public class ConcertService {
 		return concertRepository.setTicketingStartTime(newConcert);
 	}
 
-	public long modifyRounds(Concert concert, List<Round> rounds) {
+	public long updateRounds(Concert concert, List<Round> rounds) {
 		Concert newConcert = concert.setRounds(rounds);
 
-		return concertRepository.modifyRounds(newConcert);
+		roundRepository.update(newConcert);
+
+		return concert.id();
 	}
 
+	@Transactional
 	public long updatePlace(Concert concert, Place place, List<ConcertSeat> seatModel) {
 		Concert newConcert = concert.updatePlace(place, seatModel);
 
-		return concertRepository.updatePlace(newConcert);
+		long updatedId = concertRepository.updatePlace(newConcert);
+
+		concertSeatRepository.update(newConcert);
+
+		return updatedId;
 	}
 }

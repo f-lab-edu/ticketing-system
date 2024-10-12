@@ -18,6 +18,6 @@ public class ModifyRoundsUseCase {
 	public long execute(Long id, ModifyRoundsRequest request) {
 		Concert concert = concertService.get(id);
 
-		return concertService.modifyRounds(concert, request.toModel());
+		return concertService.updateRounds(concert, request.toModel());
 	}
 }

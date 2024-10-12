@@ -10,8 +10,6 @@ import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertReposit
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.repository.ConcertJpaRepository;
 import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertEntity;
-import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertSeatEntity;
-import co.kr.ticketing.adminconcert.concert.repository.entity.RoundEntity;
 import co.kr.ticketing.adminconcert.place.repository.PlaceJpaRepository;
 import co.kr.ticketing.adminconcert.place.repository.entity.PlaceEntity;
 import lombok.AccessLevel;
@@ -75,17 +73,6 @@ public class ConcertAdapter implements ConcertRepository {
 
 	@Override
 	@Transactional
-	public long modifyRounds(Concert concert) {
-		ConcertEntity concertEntity = concertJpaRepository.findById(concert.id())
-			.orElseThrow(() -> new ResourceNotFoundException("concert", concert.id()));
-
-		concertEntity.setRoundEntities(concert.rounds().stream().map(RoundEntity::from).toList());
-
-		return concertEntity.getId();
-	}
-
-	@Override
-	@Transactional
 	public long updatePlace(Concert concert) {
 		ConcertEntity concertEntity = concertJpaRepository.findById(concert.id())
 			.orElseThrow(() -> new ResourceNotFoundException("concert", concert.id()));
@@ -93,7 +80,7 @@ public class ConcertAdapter implements ConcertRepository {
 		PlaceEntity placeEntity = placeJpaRepository.findById(concert.place().id())
 			.orElseThrow(() -> new ResourceNotFoundException("place", concert.place().id()));
 
-		concertEntity.updatePlace(placeEntity, concert.seats().stream().map(ConcertSeatEntity::from).toList());
+		concertEntity.updatePlace(placeEntity);
 
 		return concertEntity.getId();
 	}
