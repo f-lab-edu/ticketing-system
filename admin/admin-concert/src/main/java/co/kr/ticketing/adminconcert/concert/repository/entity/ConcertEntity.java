@@ -1,7 +1,6 @@
 package co.kr.ticketing.adminconcert.concert.repository.entity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
@@ -67,9 +66,9 @@ public class ConcertEntity {
 	private PlaceEntity placeEntity;
 
 	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY)
-	private final List<RoundEntity> roundEntities = new ArrayList<>();
+	private List<RoundEntity> roundEntities;
 	@OneToMany(mappedBy = "concertEntity", fetch = FetchType.LAZY)
-	private final List<ConcertSeatEntity> seatEntities = new ArrayList<>();
+	private List<ConcertSeatEntity> seatEntities;
 
 	@Builder
 	public ConcertEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String name, String detailInfo,
@@ -87,32 +86,8 @@ public class ConcertEntity {
 		this.lastRunningEndTime = lastRunningEndTime;
 		this.openTime = openTime;
 		this.placeEntity = placeEntity;
-		setRoundEntities(roundEntities);
-		setSeatEntities(seatEntities);
-	}
-
-	public void setRoundEntities(List<RoundEntity> roundEntities) {
-		this.roundEntities.clear();
-		if (roundEntities != null) {
-			this.roundEntities.addAll(roundEntities);
-			roundEntities.forEach(roundEntity -> {
-				if (roundEntity.getConcertEntity() != this) {
-					roundEntity.setConcertEntity(this);
-				}
-			});
-		}
-	}
-
-	public void setSeatEntities(List<ConcertSeatEntity> seatEntities) {
-		this.seatEntities.clear();
-		if (seatEntities != null) {
-			this.seatEntities.addAll(seatEntities);
-			seatEntities.forEach(seatEntity -> {
-				if (seatEntity.getConcertEntity() != this) {
-					seatEntity.setConcertEntity(this);
-				}
-			});
-		}
+		this.roundEntities = roundEntities;
+		this.seatEntities = seatEntities;
 	}
 
 	public static ConcertEntity from(Concert concert, PlaceEntity placeEntity) {

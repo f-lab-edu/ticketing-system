@@ -49,16 +49,7 @@ public class RoundEntity {
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.startDateTime = startDateTime;
-		setConcertEntity(concertEntity);
-	}
-
-	void setConcertEntity(ConcertEntity concertEntity) {
-		if (concertEntity != null) {
-			this.concertEntity = concertEntity;
-			if (!concertEntity.getRoundEntities().contains(this)) {
-				concertEntity.getRoundEntities().add(this);
-			}
-		}
+		this.concertEntity = concertEntity;
 	}
 
 	public static RoundEntity from(ConcertEntity concertEntity, Round round) {

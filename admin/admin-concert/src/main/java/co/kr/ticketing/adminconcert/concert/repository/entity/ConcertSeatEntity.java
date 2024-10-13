@@ -75,16 +75,7 @@ public class ConcertSeatEntity {
 		this.rowNum = rowNum;
 		this.floor = floor;
 		this.state = state;
-		setConcertEntity(concertEntity);
-	}
-
-	public void setConcertEntity(ConcertEntity concertEntity) {
-		if (concertEntity != null) {
-			this.concertEntity = concertEntity;
-			if (!concertEntity.getSeatEntities().contains(this)) {
-				concertEntity.getSeatEntities().add(this);
-			}
-		}
+		this.concertEntity = concertEntity;
 	}
 
 	public static ConcertSeatEntity from(ConcertEntity concertEntity, ConcertSeat concertSeat) {
