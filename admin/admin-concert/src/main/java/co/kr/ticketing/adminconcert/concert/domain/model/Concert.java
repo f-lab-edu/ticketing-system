@@ -49,6 +49,10 @@ public record Concert(
 		return !state.equals(ConcertState.CLOSE);
 	}
 
+	public boolean isPossibleUpdateSeats() {
+		return !isPossibleUpdate() || ticketingStartTime.isBefore(LocalDateTime.now());
+	}
+
 	public Concert setOpenTime(LocalDateTime openTime) {
 		if (!this.state.isSetOpenTimeState() ||
 			openTime.isBefore(LocalDateTime.now()) ||
@@ -140,5 +144,44 @@ public record Concert(
 			.place(place)
 			.seats(List.copyOf(seats))
 			.build();
+	}
+
+	public Concert changeState(ConcertState state) {
+		if (state == ConcertState.READY) {
+			throw new BadRequestException("READY 상태로 변경할 수 없습니다");
+		} else if (state == ConcertState.OPEN) {
+			isPossibleChangeStateToOpen();
+		} else {
+			isPossibleChangeStateToClose();
+		}
+
+		return Concert.builder()
+			.id(this.id)
+			.name(this.name)
+			.detailInfo(this.detailInfo)
+			.runningTime(this.runningTime)
+			.state(state)
+			.ticketingStartTime(this.ticketingStartTime)
+			.lastRunningEndTime(this.lastRunningEndTime)
+			.openTime(this.openTime)
+			.rounds(List.copyOf(this.rounds))
+			.place(this.place)
+			.seats(List.copyOf(this.seats))
+			.build();
+	}
+
+	private void isPossibleChangeStateToOpen() {
+		if (this.state == ConcertState.CLOSE || (this.openTime != null && this.openTime.isAfter(LocalDateTime.now()))) {
+			throw new BadRequestException("OPEN 상태로 변경할 수 없습니다");
+		}
+	}
+
+	private void isPossibleChangeStateToClose() {
+		if (this.state == ConcertState.OPEN) {
+			if (this.lastRunningEndTime.isAfter(LocalDateTime.now())) {
+				//todo) 예매된 공연이 있으면 변경 불가능한 로직 추가
+				throw new BadRequestException("CLOSE 상태로 변경할 수 없습니다");
+			}
+		}
 	}
 }

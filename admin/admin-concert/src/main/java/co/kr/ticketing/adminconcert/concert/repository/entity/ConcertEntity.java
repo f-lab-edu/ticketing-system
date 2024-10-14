@@ -51,6 +51,7 @@ public class ConcertEntity {
 
 	private Integer runningTime;
 
+	@Setter
 	@Column(nullable = false)
 	@ColumnDefault("'READY'")
 	@Enumerated(EnumType.STRING)

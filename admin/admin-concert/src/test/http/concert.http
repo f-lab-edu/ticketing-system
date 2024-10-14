@@ -1,4 +1,7 @@
 ### get concert
+GET http://localhost:8081/concerts?name=콘서트
+
+### get concert
 GET http://localhost:8081/concerts/1
 
 ### create concert
@@ -92,4 +95,25 @@ Content-Type: application/json
       "floor": 1
     }
   ]
+}
+
+### update concert seats
+PATCH http://localhost:8081/concerts/1/seats
+Content-Type: application/json
+
+{
+  "seats": [
+    {
+      "id": 1,
+      "grade": "C",
+      "price": 100
+    }
+  ]
+}
+
+### change concert state to close
+PUT http://localhost:8081/concerts/1/state/close
+Content-Type: application/json
+
+{
 }

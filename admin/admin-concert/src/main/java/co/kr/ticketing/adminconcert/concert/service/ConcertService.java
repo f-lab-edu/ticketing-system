@@ -14,8 +14,11 @@ import co.kr.ticketing.adminconcert.concert.domain.infrastructure.ConcertSeatRep
 import co.kr.ticketing.adminconcert.concert.domain.infrastructure.RoundRepository;
 import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
+import co.kr.ticketing.adminconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.adminconcert.concert.domain.model.Round;
 import co.kr.ticketing.adminconcert.concert.service.dto.CreateConcertVo;
+import co.kr.ticketing.adminconcert.concert.service.dto.GetConcertListVo;
+import co.kr.ticketing.adminconcert.concert.service.dto.ModifyConcertSeatVo;
 import co.kr.ticketing.adminconcert.place.domain.model.Place;
 import co.kr.ticketing.adminconcert.place.service.PlaceService;
 import lombok.AccessLevel;
@@ -34,6 +37,15 @@ public class ConcertService {
 	public Concert get(Long id) {
 		return concertRepository.find(id)
 			.orElseThrow(() -> new ResourceNotFoundException("concert", id));
+	}
+
+	public List<Concert> getList(GetConcertListVo getListVo) {
+		return concertRepository.getList(getListVo);
+	}
+
+	public List<Concert> getListToOpen() {
+		return concertRepository.getList(
+			GetConcertListVo.builder().openTime(LocalDateTime.now()).build());
 	}
 
 	@Transactional
@@ -85,5 +97,21 @@ public class ConcertService {
 		concertSeatRepository.update(newConcert);
 
 		return updatedId;
+	}
+
+	public long modifySeats(Concert concert, List<ModifyConcertSeatVo> modifyConcertSeatVo) {
+		if (concert.isPossibleUpdateSeats()) {
+			throw new BadRequestException("현재 좌석 정보를 수정할 수 없는 상태입니다");
+		}
+
+		concertSeatRepository.modify(concert, modifyConcertSeatVo);
+
+		return concert.id();
+	}
+
+	public long changeState(Concert concert, ConcertState state) {
+		Concert changedConcert = concert.changeState(state);
+
+		return concertRepository.changeState(changedConcert);
 	}
 }
