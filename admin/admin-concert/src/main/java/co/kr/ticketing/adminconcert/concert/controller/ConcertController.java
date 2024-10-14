@@ -3,6 +3,7 @@ package co.kr.ticketing.adminconcert.concert.controller;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,15 +16,21 @@ import co.kr.ticketing.adminconcert.common.dto.CreatedDto;
 import co.kr.ticketing.adminconcert.common.dto.ResponseDto;
 import co.kr.ticketing.adminconcert.common.dto.UpdatedDto;
 import co.kr.ticketing.adminconcert.concert.controller.request.CreateConcertRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.GetConcertListRequest;
+import co.kr.ticketing.adminconcert.concert.controller.request.ModifyConcertSeatsRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.ModifyRoundsRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.SetOpenTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.SetTicketingStartTimeRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdateConcertRequest;
 import co.kr.ticketing.adminconcert.concert.controller.request.UpdatePlaceRequest;
 import co.kr.ticketing.adminconcert.concert.controller.response.ConcertResponseCode;
+import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertListResponse;
 import co.kr.ticketing.adminconcert.concert.controller.response.GetConcertResponse;
+import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertListUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.reader.GetConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.ChangeStateToCloseUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.CreateConcertUseCase;
+import co.kr.ticketing.adminconcert.concert.usecase.writer.ModifyConcertSeatsUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.ModifyRoundsUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetOpenTimeUseCase;
 import co.kr.ticketing.adminconcert.concert.usecase.writer.SetTicketingStartTimeUseCase;
@@ -41,6 +48,7 @@ import lombok.experimental.FieldDefaults;
 @RequestMapping(value = "/concerts")
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ConcertController {
+	GetConcertListUseCase getConcertListUseCase;
 	CreateConcertUseCase createConcertUseCase;
 	GetConcertUseCase getConcertUseCase;
 	UpdateConcertUseCase updateConcertUseCase;
@@ -48,6 +56,17 @@ public class ConcertController {
 	SetTicketingStartTimeUseCase setTicketingStartTimeUseCase;
 	ModifyRoundsUseCase modifyRoundsUseCase;
 	UpdatePlaceUseCase updatePlaceUseCase;
+	ModifyConcertSeatsUseCase modifyConcertSeatsUseCase;
+	ChangeStateToCloseUseCase changeStateToCloseUseCase;
+
+	@GetMapping
+	public ResponseEntity<ResponseDto<GetConcertListResponse>> getList(
+		@ModelAttribute @Valid GetConcertListRequest request) {
+		var response = getConcertListUseCase.execute(request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.CREATED_CONCERT.name(), response));
+	}
 
 	@PostMapping
 	public ResponseEntity<ResponseDto<CreatedDto>> createConcert(@RequestBody @Valid CreateConcertRequest request) {
@@ -120,6 +139,27 @@ public class ConcertController {
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(ConcertResponseCode.UPDATE_CONCERT_PLACE.name(), UpdatedDto.from(updatedId))
+		);
+	}
+
+	@PatchMapping("/{id}/seats")
+	public ResponseEntity<ResponseDto<UpdatedDto>> modifyConcertSeats(
+		@PathVariable @Positive Long id,
+		@RequestBody @Valid ModifyConcertSeatsRequest request
+	) {
+		long updatedId = modifyConcertSeatsUseCase.execute(id, request);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.UPDATE_CONCERT_SEATS.name(), UpdatedDto.from(updatedId))
+		);
+	}
+
+	@PutMapping("/{id}/state/close")
+	public ResponseEntity<ResponseDto<UpdatedDto>> changeStateToClose(@PathVariable @Positive Long id) {
+		long updatedId = changeStateToCloseUseCase.execute(id);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(ConcertResponseCode.CHANGE_STATE_TO_CLOSE.name(), UpdatedDto.from(updatedId))
 		);
 	}
 }

@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeatState;
+import co.kr.ticketing.adminconcert.concert.service.dto.ModifyConcertSeatVo;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -100,5 +101,10 @@ public class ConcertSeatEntity {
 			.floor(floor)
 			.state(state)
 			.build();
+	}
+
+	public void modify(ModifyConcertSeatVo modifyVo) {
+		this.grade = modifyVo.grade();
+		this.price = modifyVo.price();
 	}
 }
