@@ -10,6 +10,10 @@ public record GetConcertListVo(
 	String name,
 	String placeName,
 	ConcertState state,
-	LocalDateTime openTime
+	LocalDateTime openTime,
+	Integer searchOpenTimeMinutes
 ) {
+	public LocalDateTime getSearchStartOpenTime() {
+		return openTime.minusMinutes(searchOpenTimeMinutes);
+	}
 }

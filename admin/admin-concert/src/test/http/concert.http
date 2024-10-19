@@ -112,7 +112,7 @@ Content-Type: application/json
 }
 
 ### change concert state to close
-PUT http://localhost:8081/concerts/1/state/close
+PUT http://localhost:8081/concerts/1/close
 Content-Type: application/json
 
 {
