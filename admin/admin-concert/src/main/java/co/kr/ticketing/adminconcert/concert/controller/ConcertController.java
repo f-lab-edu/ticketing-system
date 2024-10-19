@@ -154,7 +154,7 @@ public class ConcertController {
 		);
 	}
 
-	@PutMapping("/{id}/state/close")
+	@PutMapping("/{id}/close")
 	public ResponseEntity<ResponseDto<UpdatedDto>> changeStateToClose(@PathVariable @Positive Long id) {
 		long updatedId = changeStateToCloseUseCase.execute(id);
 

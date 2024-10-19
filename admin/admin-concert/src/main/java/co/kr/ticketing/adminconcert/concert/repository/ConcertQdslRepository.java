@@ -19,12 +19,13 @@ public class ConcertQdslRepository extends QuerydslRepositorySupport {
 
 	public List<ConcertEntity> getList(GetConcertListVo getListVo) {
 		return selectFrom(concertEntity)
-			.leftJoin(concertEntity.placeEntity, placeEntity)
+			.innerJoin(concertEntity.placeEntity, placeEntity)
 			.where(
-				getListVo.name() != null ? concertEntity.name.contains(getListVo.name()) : null,
-				getListVo.placeName() != null ? placeEntity.name.contains(getListVo.name()) : null,
+				getListVo.name() != null ? concertEntity.name.startsWith(getListVo.name()) : null,
+				getListVo.placeName() != null ? placeEntity.name.startsWith(getListVo.name()) : null,
 				getListVo.state() != null ? concertEntity.state.eq(getListVo.state()) : null,
-				getListVo.openTime() != null ? concertEntity.openTime.loe(getListVo.openTime()) : null
+				getListVo.openTime() != null ?
+					concertEntity.openTime.between(getListVo.getSearchStartOpenTime(), getListVo.openTime()) : null
 			)
 			.limit(100)
 			.fetch();
