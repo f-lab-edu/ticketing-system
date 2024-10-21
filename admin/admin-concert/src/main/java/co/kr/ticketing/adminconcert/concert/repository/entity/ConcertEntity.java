@@ -114,7 +114,7 @@ public class ConcertEntity {
 			.ticketingStartTime(ticketingStartTime)
 			.lastRunningEndTime(lastRunningEndTime)
 			.openTime(openTime)
-			.place(placeEntity.toModel())
+			.place(placeEntity != null ? placeEntity.toModel() : null)
 			.rounds(roundEntities.stream().map(RoundEntity::toModel).toList())
 			.seats(seatEntities.stream().map(ConcertSeatEntity::toModel).toList())
 			.build();

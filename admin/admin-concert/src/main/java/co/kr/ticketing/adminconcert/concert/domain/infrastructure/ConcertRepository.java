@@ -11,6 +11,8 @@ public interface ConcertRepository {
 
 	List<Concert> getList(GetConcertListVo getListVo);
 
+	List<Concert> getListToClose();
+
 	long create(Concert concert);
 
 	long update(Concert concert);
