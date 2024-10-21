@@ -48,6 +48,10 @@ public class ConcertService {
 			GetConcertListVo.builder().openTime(LocalDateTime.now()).build());
 	}
 
+	public List<Concert> getListToClose() {
+		return concertRepository.getListToClose();
+	}
+
 	@Transactional
 	public long create(CreateConcertVo createVo) {
 		Place place = placeService.get(createVo.placeId());

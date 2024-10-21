@@ -39,6 +39,11 @@ public class ConcertAdapter implements ConcertRepository {
 	}
 
 	@Override
+	public List<Concert> getListToClose() {
+		return concertQdslRepository.getListToClose().stream().map(ConcertEntity::toModel).toList();
+	}
+
+	@Override
 	@Transactional
 	public long create(Concert concert) {
 		PlaceEntity placeEntity = placeJpaRepository.findById(concert.place().id())

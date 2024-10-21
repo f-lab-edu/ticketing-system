@@ -17,7 +17,7 @@ import lombok.experimental.FieldDefaults;
 @Component
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ConcertStateChangeSchduler {
+public class ConcertStateChangeScheduler {
 	ConcertService concertService;
 
 	@Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
@@ -29,6 +29,18 @@ public class ConcertStateChangeSchduler {
 		List<Concert> listToOpen = concertService.getListToOpen();
 		for (var concert : listToOpen) {
 			concertService.changeState(concert, ConcertState.OPEN);
+		}
+	}
+
+	@Scheduled(cron = "0 * * * * *", zone = "Asia/Seoul")
+	@SchedulerLock(
+		name = "schedulingConcertChangeStateToClose",
+		lockAtLeastFor = "5s",
+		lockAtMostFor = "15s")
+	public void changeStateToClose() {
+		List<Concert> listToOpen = concertService.getListToClose();
+		for (var concert : listToOpen) {
+			concertService.changeState(concert, ConcertState.CLOSE);
 		}
 	}
 }
