@@ -65,7 +65,7 @@ public class ConcertController {
 		var response = getConcertListUseCase.execute(request);
 
 		return ResponseEntity.ok(
-			new ResponseDto<>(ConcertResponseCode.CREATED_CONCERT.name(), response));
+			new ResponseDto<>(ConcertResponseCode.GET_CONCERT_LIST.name(), response));
 	}
 
 	@PostMapping

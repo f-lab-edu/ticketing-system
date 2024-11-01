@@ -1,6 +1,7 @@
 package co.kr.ticketing.adminconcert.concert.controller.response;
 
 public enum ConcertResponseCode {
+	GET_CONCERT_LIST,
 	GET_CONCERT,
 	CREATED_CONCERT,
 	UPDATE_CONCERT,
