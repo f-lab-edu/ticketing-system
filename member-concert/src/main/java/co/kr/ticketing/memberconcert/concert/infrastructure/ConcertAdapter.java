@@ -23,6 +23,6 @@ public class ConcertAdapter implements ConcertRepository {
 
 	@Override
 	public Page<Concert> getList(Pageable pageable) {
-		return concertJpaRepository.findByStateIs(pageable, ConcertState.OPEN).map(ConcertEntity::toModelWithPlace);
+		return concertJpaRepository.findByStateIs(pageable, ConcertState.OPEN).map(ConcertEntity::toModel);
 	}
 }
