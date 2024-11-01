@@ -3,6 +3,11 @@ rootProject.name = 'ticketing'
 include 'member'
 findProject(':member')?.name = 'member'
 
+include 'member-concert'
+findProject(':member-concert')?.name = 'member-concert'
+
+
 include 'admin'
 include 'admin:admin-concert'
 findProject(':admin:admin-concert')?.name = 'admin-concert'
+

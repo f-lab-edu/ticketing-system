@@ -1,0 +1,16 @@
+dependencies {
+    // database
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.mysql:mysql-connector-j'
+}
+
+bootJar {
+    archivesBaseName = 'Member-concert'
+    archiveFileName = 'member-concert.jar'
+    destinationDirectory = file(project.rootProject.projectDir)
+    enabled = true
+}
+
+jar {
+    enabled = false
+}
