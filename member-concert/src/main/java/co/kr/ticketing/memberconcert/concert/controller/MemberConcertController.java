@@ -13,9 +13,11 @@ import co.kr.ticketing.memberconcert.common.dto.PageableRequest;
 import co.kr.ticketing.memberconcert.common.dto.ResponseDto;
 import co.kr.ticketing.memberconcert.concert.controller.response.GetConcertListResponse;
 import co.kr.ticketing.memberconcert.concert.controller.response.GetConcertResponse;
+import co.kr.ticketing.memberconcert.concert.controller.response.GetRoundStatusResponse;
 import co.kr.ticketing.memberconcert.concert.controller.response.MemberConcertResponseCode;
 import co.kr.ticketing.memberconcert.concert.usecase.reader.GetConcertListUseCase;
 import co.kr.ticketing.memberconcert.concert.usecase.reader.GetConcertUseCase;
+import co.kr.ticketing.memberconcert.concert.usecase.reader.GetRoundStatusUseCase;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Positive;
 import lombok.AccessLevel;
@@ -30,6 +32,7 @@ import lombok.experimental.FieldDefaults;
 public class MemberConcertController {
 	GetConcertListUseCase getConcertListUseCase;
 	GetConcertUseCase getConcertUseCase;
+	GetRoundStatusUseCase getRoundStatusUseCase;
 
 	@GetMapping
 	public ResponseEntity<ResponseDto<PageResponse<GetConcertListResponse>>> getList(
@@ -46,5 +49,15 @@ public class MemberConcertController {
 
 		return ResponseEntity.ok(
 			new ResponseDto<>(MemberConcertResponseCode.GET_CONCERT.name(), response));
+	}
+
+	@GetMapping("/{id}/rounds/{roundId}")
+	public ResponseEntity<ResponseDto<GetRoundStatusResponse>> getRoundStatus(
+		@PathVariable @Positive Long id,
+		@PathVariable @Positive Integer roundId) {
+		var response = getRoundStatusUseCase.execute(id, roundId);
+
+		return ResponseEntity.ok(
+			new ResponseDto<>(MemberConcertResponseCode.GET_CONCERT_ROUND_STATUS.name(), response));
 	}
 }

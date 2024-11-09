@@ -1,2 +1,9 @@
-### get concert
+### get concert list
 GET http://localhost:8080/concerts?page=1&limit=10
+
+### get concert
+GET http://localhost:8080/concerts/1
+
+### get concert round state
+GET http://localhost:8080/concerts/1/rounds/1
+

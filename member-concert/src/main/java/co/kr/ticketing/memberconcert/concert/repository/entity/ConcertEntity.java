@@ -62,9 +62,6 @@ public class ConcertEntity {
 
 	@Setter
 	private LocalDateTime ticketingStartTime;
-	private LocalDateTime lastRunningEndTime;
-	@Setter
-	private LocalDateTime openTime;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private PlaceEntity placeEntity;
@@ -82,9 +79,8 @@ public class ConcertEntity {
 			.runningTime(runningTime)
 			.state(state)
 			.ticketingStartTime(ticketingStartTime)
-			.lastRunningEndTime(lastRunningEndTime)
-			.openTime(openTime)
 			.place(placeEntity != null ? placeEntity.toModel() : null)
+			.rounds(roundEntities.stream().map(RoundEntity::toModel).toList())
 			.build();
 	}
 }

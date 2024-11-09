@@ -14,8 +14,6 @@ public record Concert(
 	int runningTime,
 	ConcertState state,
 	LocalDateTime ticketingStartTime,
-	LocalDateTime lastRunningEndTime,
-	LocalDateTime openTime,
 	List<Round> rounds,
 	Place place,
 	List<ConcertSeat> seats
