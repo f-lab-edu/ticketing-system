@@ -1,6 +1,8 @@
 package co.kr.ticketing.adminconcert.concert.repository.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
@@ -57,6 +59,9 @@ public class ConcertSeatEntity {
 	private Integer floor;
 
 	@Column(nullable = false)
+	private Integer sequenceNumber;
+
+	@Column(nullable = false)
 	@ColumnDefault("'EMPTY'")
 	@Enumerated(EnumType.STRING)
 	private ConcertSeatState state;
@@ -66,7 +71,8 @@ public class ConcertSeatEntity {
 
 	@Builder
 	public ConcertSeatEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, String grade, Integer price,
-		Integer columnNum, Integer rowNum, Integer floor, ConcertSeatState state, ConcertEntity concertEntity) {
+		Integer columnNum, Integer rowNum, Integer floor, Integer sequenceNumber, ConcertSeatState state,
+		ConcertEntity concertEntity) {
 		this.id = id;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
@@ -75,11 +81,27 @@ public class ConcertSeatEntity {
 		this.columnNum = columnNum;
 		this.rowNum = rowNum;
 		this.floor = floor;
+		this.sequenceNumber = sequenceNumber;
 		this.state = state;
 		this.concertEntity = concertEntity;
 	}
 
-	public static ConcertSeatEntity from(ConcertEntity concertEntity, ConcertSeat concertSeat) {
+	public static List<ConcertSeatEntity> from(ConcertEntity concertEntity, List<ConcertSeat> concertSeats,
+		int totalRoundCount) {
+		List<ConcertSeatEntity> result = new ArrayList<>();
+
+		for (int i = 0; i < totalRoundCount; i++) {
+			final int sequenceNumber = i + 1;
+
+			result.addAll(concertSeats.stream()
+				.map(seat -> ConcertSeatEntity.from(concertEntity, seat, sequenceNumber))
+				.toList());
+		}
+
+		return result;
+	}
+
+	public static ConcertSeatEntity from(ConcertEntity concertEntity, ConcertSeat concertSeat, int sequenceNumber) {
 		return ConcertSeatEntity.builder()
 			.grade(concertSeat.grade())
 			.price(concertSeat.price())
@@ -87,6 +109,7 @@ public class ConcertSeatEntity {
 			.rowNum(concertSeat.rowNum())
 			.floor(concertSeat.floor())
 			.state(concertSeat.state())
+			.sequenceNumber(sequenceNumber)
 			.concertEntity(concertEntity)
 			.build();
 	}
@@ -99,6 +122,7 @@ public class ConcertSeatEntity {
 			.columnNum(columnNum)
 			.rowNum(rowNum)
 			.floor(floor)
+			.sequenceNumber(sequenceNumber)
 			.state(state)
 			.build();
 	}

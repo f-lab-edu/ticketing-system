@@ -8,4 +8,6 @@ import co.kr.ticketing.adminconcert.concert.repository.entity.RoundEntity;
 @Repository
 public interface RoundJpaRepository extends JpaRepository<RoundEntity, Long> {
 	void deleteAllByConcertEntityId(long concertEntityId);
+
+	int countByConcertEntityId(long concertEntityId);
 }

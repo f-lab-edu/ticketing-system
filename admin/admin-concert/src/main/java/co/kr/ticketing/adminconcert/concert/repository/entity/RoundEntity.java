@@ -1,6 +1,8 @@
 package co.kr.ticketing.adminconcert.concert.repository.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.data.annotation.CreatedDate;
@@ -39,16 +41,20 @@ public class RoundEntity {
 	@Column(nullable = false)
 	private LocalDateTime startDateTime;
 
+	@Column(nullable = false)
+	private Integer sequenceNumber;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ConcertEntity concertEntity;
 
 	@Builder
 	public RoundEntity(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime startDateTime,
-		ConcertEntity concertEntity) {
+		Integer sequenceNumber, ConcertEntity concertEntity) {
 		this.id = id;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.startDateTime = startDateTime;
+		this.sequenceNumber = sequenceNumber;
 		this.concertEntity = concertEntity;
 	}
 
@@ -56,13 +62,30 @@ public class RoundEntity {
 		return RoundEntity.builder()
 			.startDateTime(round.startDateTime())
 			.concertEntity(concertEntity)
+			.sequenceNumber(round.sequenceNumber())
 			.build();
+	}
+
+	public static List<RoundEntity> from(ConcertEntity concertEntity, List<Round> round) {
+		List<RoundEntity> result = new ArrayList<>();
+
+		for (int i = 0; i < round.size(); i++) {
+			var curRound = round.get(i);
+			result.add(RoundEntity.builder()
+				.startDateTime(curRound.startDateTime())
+				.concertEntity(concertEntity)
+				.sequenceNumber(i + 1)
+				.build());
+		}
+
+		return result;
 	}
 
 	public Round toModel() {
 		return Round.builder()
 			.id(id)
 			.startDateTime(startDateTime)
+			.sequenceNumber(sequenceNumber)
 			.build();
 	}
 }
