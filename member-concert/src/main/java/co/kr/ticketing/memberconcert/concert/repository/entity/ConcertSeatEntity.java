@@ -58,6 +58,9 @@ public class ConcertSeatEntity {
 	private Integer floor;
 
 	@Column(nullable = false)
+	private Integer sequenceNumber;
+
+	@Column(nullable = false)
 	@ColumnDefault("'EMPTY'")
 	@Enumerated(EnumType.STRING)
 	private ConcertSeatState state;

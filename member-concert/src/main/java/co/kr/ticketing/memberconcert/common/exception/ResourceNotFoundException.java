@@ -12,4 +12,8 @@ public class ResourceNotFoundException extends CustomException {
 	public ResourceNotFoundException(String domain, String id) {
 		super(HttpStatus.NO_CONTENT, "domain: " + domain + ", id: " + id);
 	}
+
+	public ResourceNotFoundException(String message) {
+		super(HttpStatus.NO_CONTENT, message);
+	}
 }

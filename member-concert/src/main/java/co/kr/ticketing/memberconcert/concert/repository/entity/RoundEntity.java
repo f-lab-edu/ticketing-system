@@ -7,6 +7,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import co.kr.ticketing.memberconcert.concert.domain.model.Round;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
@@ -41,6 +42,17 @@ public class RoundEntity {
 	@Column(nullable = false)
 	private LocalDateTime startDateTime;
 
+	@Column(nullable = false)
+	private Integer sequenceNumber;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	private ConcertEntity concertEntity;
+
+	public Round toModel() {
+		return Round.builder()
+			.id(id)
+			.startDateTime(startDateTime)
+			.sequenceNumber(sequenceNumber)
+			.build();
+	}
 }
