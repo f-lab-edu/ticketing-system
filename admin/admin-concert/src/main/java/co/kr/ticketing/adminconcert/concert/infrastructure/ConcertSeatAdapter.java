@@ -12,6 +12,7 @@ import co.kr.ticketing.adminconcert.concert.domain.model.Concert;
 import co.kr.ticketing.adminconcert.concert.domain.model.ConcertSeat;
 import co.kr.ticketing.adminconcert.concert.repository.ConcertJpaRepository;
 import co.kr.ticketing.adminconcert.concert.repository.ConcertSeatJpaRepository;
+import co.kr.ticketing.adminconcert.concert.repository.RoundJpaRepository;
 import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertEntity;
 import co.kr.ticketing.adminconcert.concert.repository.entity.ConcertSeatEntity;
 import co.kr.ticketing.adminconcert.concert.service.dto.ModifyConcertSeatVo;
@@ -26,16 +27,17 @@ import lombok.experimental.FieldDefaults;
 public class ConcertSeatAdapter implements ConcertSeatRepository {
 	ConcertJpaRepository concertJpaRepository;
 	ConcertSeatJpaRepository concertSeatJpaRepository;
+	RoundJpaRepository roundJpaRepository;
 
 	@Override
 	public void create(long concertId, List<ConcertSeat> concertSeats) {
 		ConcertEntity concertEntity = concertJpaRepository.findById(concertId)
 			.orElseThrow(() -> new ResourceNotFoundException("concert", concertId));
 
+		int totalRoundCount = roundJpaRepository.countByConcertEntityId(concertId);
+
 		concertSeatJpaRepository.saveAll(
-			concertSeats.stream()
-				.map(round -> ConcertSeatEntity.from(concertEntity, round))
-				.toList()
+			ConcertSeatEntity.from(concertEntity, concertSeats, totalRoundCount)
 		);
 	}
 

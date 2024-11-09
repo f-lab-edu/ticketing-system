@@ -31,7 +31,7 @@ public class RoundAdapter implements RoundRepository {
 			.orElseThrow(() -> new ResourceNotFoundException("concert", concertId));
 
 		roundJpaRepository.saveAll(
-			rounds.stream().map(round -> RoundEntity.from(concertEntity, round)).toList()
+			RoundEntity.from(concertEntity, rounds)
 		);
 	}
 
