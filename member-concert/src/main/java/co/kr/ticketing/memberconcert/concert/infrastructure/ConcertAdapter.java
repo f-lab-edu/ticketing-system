@@ -1,5 +1,7 @@
 package co.kr.ticketing.memberconcert.concert.infrastructure;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -24,5 +26,10 @@ public class ConcertAdapter implements ConcertRepository {
 	@Override
 	public Page<Concert> getList(Pageable pageable) {
 		return concertJpaRepository.findByStateIs(pageable, ConcertState.OPEN).map(ConcertEntity::toModel);
+	}
+
+	@Override
+	public Optional<Concert> find(long id) {
+		return concertJpaRepository.findById(id).map(ConcertEntity::toModel);
 	}
 }
