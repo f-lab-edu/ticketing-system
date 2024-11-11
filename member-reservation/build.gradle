@@ -1,0 +1,26 @@
+dependencies {
+    // database
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.mysql:mysql-connector-j'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // validator
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    //jwt
+    implementation 'io.jsonwebtoken:jjwt:0.9.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:4.0.1'
+    implementation 'com.sun.xml.bind:jaxb-core:4.0.1'
+    implementation 'javax.xml.bind:jaxb-api:2.4.0-b180830.0359'
+}
+
+bootJar {
+    archivesBaseName = 'Member-reservation'
+    archiveFileName = 'member-reservation.jar'
+    destinationDirectory = file(project.rootProject.projectDir)
+    enabled = true
+}
+
+jar {
+    enabled = false
+}

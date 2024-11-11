@@ -1,0 +1,8 @@
+### create waiting token
+POST http://localhost:8082/reservations/tokens/waiting
+Content-Type: application/json
+
+{
+  "concertId": 1,
+  "sequenceNumber": 1
+}

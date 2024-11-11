@@ -1,0 +1,12 @@
+spring:
+  profiles:
+    include:
+      - datasource
+  jpa:
+    properties:
+      hibernate:
+        create_empty_composites:
+          enabled: true
+
+server:
+  port: 8082
