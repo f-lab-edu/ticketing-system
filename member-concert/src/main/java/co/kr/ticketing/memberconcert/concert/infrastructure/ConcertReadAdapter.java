@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.kr.ticketing.memberconcert.concert.domain.infrastructure.ConcertRepository;
+import co.kr.ticketing.memberconcert.concert.domain.infrastructure.ConcertReadRepository;
 import co.kr.ticketing.memberconcert.concert.domain.model.Concert;
 import co.kr.ticketing.memberconcert.concert.domain.model.ConcertState;
 import co.kr.ticketing.memberconcert.concert.repository.ConcertJpaRepository;
@@ -20,11 +20,11 @@ import lombok.experimental.FieldDefaults;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ConcertAdapter implements ConcertRepository {
+public class ConcertReadAdapter implements ConcertReadRepository {
 	ConcertJpaRepository concertJpaRepository;
 
 	@Override
-	public Page<Concert> getList(Pageable pageable) {
+	public Page<Concert> getPage(Pageable pageable) {
 		return concertJpaRepository.findByStateIs(pageable, ConcertState.OPEN).map(ConcertEntity::toModel);
 	}
 

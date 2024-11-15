@@ -3,7 +3,6 @@ package co.kr.ticketing.memberconcert.common.dto;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
@@ -13,7 +12,6 @@ public record PageableRequest(
 	Integer page,
 	@Positive
 	@NotNull
-	@Max(100)
 	Integer limit
 ) {
 	public Pageable toPageable() {

@@ -35,7 +35,7 @@ public class MemberConcertController {
 	GetRoundStatusUseCase getRoundStatusUseCase;
 
 	@GetMapping
-	public ResponseEntity<ResponseDto<PageResponse<GetConcertListResponse>>> getList(
+	public ResponseEntity<ResponseDto<PageResponse<GetConcertListResponse>>> getConcertList(
 		@ModelAttribute @Valid PageableRequest pageable) {
 		var response = getConcertListUseCase.execute(pageable);
 
@@ -44,7 +44,7 @@ public class MemberConcertController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<ResponseDto<GetConcertResponse>> get(@PathVariable @Positive Long id) {
+	public ResponseEntity<ResponseDto<GetConcertResponse>> getByConcertId(@PathVariable @Positive Long id) {
 		var response = getConcertUseCase.execute(id);
 
 		return ResponseEntity.ok(
