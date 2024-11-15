@@ -7,8 +7,8 @@ import org.springframework.data.domain.Pageable;
 
 import co.kr.ticketing.memberconcert.concert.domain.model.Concert;
 
-public interface ConcertRepository {
-	Page<Concert> getList(Pageable pageable);
+public interface ConcertReadRepository {
+	Page<Concert> getPage(Pageable pageable);
 
 	Optional<Concert> find(long id);
 }

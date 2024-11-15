@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import co.kr.ticketing.memberconcert.common.dto.PageResponse;
 import co.kr.ticketing.memberconcert.common.dto.PageableRequest;
+import co.kr.ticketing.memberconcert.common.exception.BadRequestException;
 import co.kr.ticketing.memberconcert.concert.controller.response.GetConcertListResponse;
 import co.kr.ticketing.memberconcert.concert.domain.model.Concert;
 import co.kr.ticketing.memberconcert.concert.service.ConcertService;
@@ -19,8 +20,16 @@ public class GetConcertListUseCase {
 	ConcertService concertService;
 
 	public PageResponse<GetConcertListResponse> execute(PageableRequest pageableRequest) {
-		Page<Concert> concerts = concertService.getList(pageableRequest.toPageable());
+		validate(pageableRequest);
+
+		Page<Concert> concerts = concertService.getPage(pageableRequest.toPageable());
 
 		return PageResponse.from(concerts, concerts.getContent().stream().map(GetConcertListResponse::from).toList());
+	}
+
+	private void validate(PageableRequest pageableRequest) {
+		if (pageableRequest.limit() > 100) {
+			throw new BadRequestException("limit은 100보다 클 수 없습니다");
+		}
 	}
 }
