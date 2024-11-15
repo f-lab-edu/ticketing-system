@@ -1,7 +1,8 @@
 package co.kr.ticketing.memberreservation.reservationtoken.controller.request;
 
-import co.kr.ticketing.memberreservation.reservationtoken.domain.manager.dto.CreateReservationTokenVo;
+import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenState;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenType;
+import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateReservationTokenRequest(
@@ -10,11 +11,12 @@ public record CreateReservationTokenRequest(
 	@NotNull
 	Integer sequenceNumber
 ) {
-	public CreateReservationTokenVo toDto() {
-		return CreateReservationTokenVo.builder()
+	public ReservationTokenValue toTokenValue() {
+		return ReservationTokenValue.builder()
 			.id(concertId)
 			.sequenceNumber(sequenceNumber)
 			.type(ReservationTokenType.CONCERT)
+			.state(ReservationTokenState.WAITING)
 			.build();
 	}
 }

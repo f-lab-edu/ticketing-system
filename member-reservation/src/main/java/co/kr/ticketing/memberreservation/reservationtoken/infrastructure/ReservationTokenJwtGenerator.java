@@ -20,7 +20,7 @@ public class ReservationTokenJwtGenerator implements ReservationTokenGenerator {
 
 	@Override
 	public ReservationToken generate(ReservationTokenValue tokenValue) {
-		int EXPIRE_SECONDS = 600; //10m
+		int EXPIRE_SECONDS = 60; //1m
 
 		return ReservationToken.builder()
 			.tokenKey(JwtUtil.generateJwt(createJwtPayload(tokenValue), EXPIRE_SECONDS))

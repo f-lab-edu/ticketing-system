@@ -18,7 +18,7 @@ public class CreateReservationTokenUseCase {
 
 	public CreateReservationTokenResponse execute(CreateReservationTokenRequest request) {
 		//todo) concert validation
-		ReservationToken reservationToken = reservationTokenService.createReservationToken(request.toDto());
+		ReservationToken reservationToken = reservationTokenService.saveTokenToWaiting(request.toTokenValue());
 
 		return CreateReservationTokenResponse.from(reservationToken);
 	}

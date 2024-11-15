@@ -1,8 +1,8 @@
 package co.kr.ticketing.memberreservation.reservationtoken.domain.infrastructure;
 
-import co.kr.ticketing.memberreservation.reservationtoken.domain.manager.dto.CreateReservationTokenVo;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
+import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 
 public interface ReservationTokenRepository {
-	ReservationToken save(CreateReservationTokenVo createReservationTokenVo);
+	ReservationToken saveTokenToWaiting(ReservationTokenValue tokenValue);
 }
