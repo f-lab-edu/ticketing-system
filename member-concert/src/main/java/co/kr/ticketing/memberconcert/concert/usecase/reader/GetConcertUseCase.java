@@ -16,7 +16,7 @@ public class GetConcertUseCase {
 	ConcertService concertService;
 
 	public GetConcertResponse execute(Long id) {
-		Concert concert = concertService.get(id);
+		Concert concert = concertService.getById(id);
 
 		return GetConcertResponse.from(concert);
 	}
