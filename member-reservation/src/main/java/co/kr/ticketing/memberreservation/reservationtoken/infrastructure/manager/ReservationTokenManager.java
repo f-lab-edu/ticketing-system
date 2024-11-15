@@ -1,4 +1,4 @@
-package co.kr.ticketing.memberreservation.reservationtoken.domain.manager;
+package co.kr.ticketing.memberreservation.reservationtoken.infrastructure.manager;
 
 import java.time.Duration;
 

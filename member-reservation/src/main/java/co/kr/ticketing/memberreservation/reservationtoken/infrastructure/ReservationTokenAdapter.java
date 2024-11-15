@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import co.kr.ticketing.memberreservation.reservationtoken.domain.infrastructure.ReservationTokenRepository;
-import co.kr.ticketing.memberreservation.reservationtoken.domain.manager.ReservationTokenManager;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
+import co.kr.ticketing.memberreservation.reservationtoken.infrastructure.manager.ReservationTokenManager;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
