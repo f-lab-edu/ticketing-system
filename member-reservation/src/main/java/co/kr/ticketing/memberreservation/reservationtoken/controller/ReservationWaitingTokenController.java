@@ -15,6 +15,7 @@ import co.kr.ticketing.memberreservation.reservationtoken.controller.request.Cre
 import co.kr.ticketing.memberreservation.reservationtoken.controller.response.CreateReservationWaitingTokenResponse;
 import co.kr.ticketing.memberreservation.reservationtoken.controller.response.GetCurrentReservationWaitingTokenPositionResponse;
 import co.kr.ticketing.memberreservation.reservationtoken.controller.response.MemberReservationTokenResponseCode;
+import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenState;
 import co.kr.ticketing.memberreservation.reservationtoken.usecase.writer.CreateReservationWaitingTokenUseCase;
 import co.kr.ticketing.memberreservation.reservationtoken.usecase.writer.GetCurrentReservationWaitingTokenPositionUseCase;
 import jakarta.validation.Valid;
@@ -41,7 +42,7 @@ public class ReservationWaitingTokenController {
 	}
 
 	@GetMapping("/position")
-	@ReservationTokenCheck
+	@ReservationTokenCheck(ReservationTokenState.WAITING)
 	public ResponseEntity<ResponseDto<GetCurrentReservationWaitingTokenPositionResponse>> getCurrentReservationWaitingTokenPosition(
 		@RequestParam String token) {
 		var response = getCurrentReservationWaitingTokenPositionUseCase.execute(token);
