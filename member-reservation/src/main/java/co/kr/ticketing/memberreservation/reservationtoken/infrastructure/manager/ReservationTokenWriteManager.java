@@ -5,9 +5,7 @@ import java.time.Duration;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import co.kr.ticketing.memberreservation.reservationtoken.domain.infrastructure.ReservationTokenGenerator;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
-import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,18 +14,11 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ReservationTokenWriteManager {
-	ReservationTokenGenerator tokenGenerator;
 	RedisTemplate<String, Object> redisTemplate;
 
-	public ReservationToken createReservationToken(ReservationTokenValue tokenValue, int ordering) {
-		ReservationTokenValue tokenValueWithCount = tokenValue.setOrdering(ordering);
-		return tokenGenerator.generate(tokenValueWithCount);
-	}
-
-	public void insertWaitingQ(ReservationToken reservationToken) {
+	public void insertWaitingQ(ReservationToken reservationToken, int ordering) {
 		redisTemplate.opsForZSet()
-			.incrementScore(reservationToken.value().getWaitingQName(), reservationToken.tokenKey(),
-				reservationToken.value().ordering());
+			.incrementScore(reservationToken.value().getWaitingQName(), reservationToken.tokenKey(), ordering);
 
 		redisTemplate.opsForValue().set(reservationToken.tokenKey(), reservationToken.value());
 	}

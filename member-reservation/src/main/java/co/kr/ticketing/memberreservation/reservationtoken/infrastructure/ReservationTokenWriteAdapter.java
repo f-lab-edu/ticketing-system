@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import co.kr.ticketing.memberreservation.reservationtoken.domain.infrastructure.ReservationTokenWriteRepository;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
-import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 import co.kr.ticketing.memberreservation.reservationtoken.infrastructure.manager.ReservationTokenReadManager;
 import co.kr.ticketing.memberreservation.reservationtoken.infrastructure.manager.ReservationTokenWriteManager;
 import lombok.AccessLevel;
@@ -28,14 +27,9 @@ public class ReservationTokenWriteAdapter implements ReservationTokenWriteReposi
 	}
 
 	@Override
-	public ReservationToken saveTokenToWaiting(ReservationTokenValue tokenValue) {
+	public void saveTokenToWaitingQ(ReservationToken token) {
+		int count = reservationTokenReadManager.getNextWaitingQCount(token);
 
-		int count = reservationTokenReadManager.getNextWaitingQCount(tokenValue);
-
-		ReservationToken reservationToken = reservationTokenWriteManager.createReservationToken(tokenValue, count);
-
-		reservationTokenWriteManager.insertWaitingQ(reservationToken);
-
-		return reservationToken;
+		reservationTokenWriteManager.insertWaitingQ(token, count);
 	}
 }

@@ -18,11 +18,6 @@ public class ReservationTokenReadAdapter implements ReservationTokenReadReposito
 	ReservationTokenReadManager reservationTokenReadManager;
 
 	@Override
-	public ReservationToken getReservationTokenByTokenKey(String key) {
-		return reservationTokenReadManager.getReservationTokenByTokenKey(key);
-	}
-
-	@Override
 	public int getTokenPositionInWaitingQ(ReservationToken reservationToken) {
 		return reservationTokenReadManager.getTokenPositionInWaitingQ(reservationToken);
 	}

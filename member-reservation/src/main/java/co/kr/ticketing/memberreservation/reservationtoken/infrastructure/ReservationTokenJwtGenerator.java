@@ -29,7 +29,6 @@ public class ReservationTokenJwtGenerator implements ReservationTokenGenerator {
 				.id(Long.valueOf((Integer)payload.get("id")))
 				.sequenceNumber((int)payload.get("sequenceNumber"))
 				.type(ReservationTokenType.valueOf((String)payload.get("type")))
-				.ordering((int)payload.get("ordering"))
 				.build())
 			.build();
 	}
@@ -50,7 +49,6 @@ public class ReservationTokenJwtGenerator implements ReservationTokenGenerator {
 		map.put("id", tokenValue.id());
 		map.put("sequenceNumber", tokenValue.sequenceNumber());
 		map.put("type", tokenValue.type().name());
-		map.put("ordering", tokenValue.ordering());
 
 		return map;
 	}

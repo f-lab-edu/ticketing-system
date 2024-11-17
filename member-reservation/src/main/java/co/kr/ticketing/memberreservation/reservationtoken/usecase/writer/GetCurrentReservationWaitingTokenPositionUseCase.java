@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import co.kr.ticketing.memberreservation.reservationtoken.controller.response.GetCurrentReservationWaitingTokenPositionResponse;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
-import co.kr.ticketing.memberreservation.reservationtoken.service.ReservationTokenService;
+import co.kr.ticketing.memberreservation.reservationtoken.service.ReservationWaitingTokenService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -13,15 +13,14 @@ import lombok.experimental.FieldDefaults;
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class GetCurrentReservationWaitingTokenPositionUseCase {
-	ReservationTokenService reservationTokenService;
+	ReservationWaitingTokenService reservationWaitingTokenService;
 
 	public GetCurrentReservationWaitingTokenPositionResponse execute(String token) {
-		ReservationToken reservationToken = reservationTokenService.getReservationTokenByTokenKey(token);
+		ReservationToken reservationToken = reservationWaitingTokenService.getReservationTokenByTokenKey(token);
 
-		//todo) calc position
-		int position = reservationTokenService.getTokenPositionInWaitingQ(reservationToken);
+		int position = reservationWaitingTokenService.getTokenPositionInWaitingQ(reservationToken);
 
-		reservationTokenService.updateWaitingInfo(reservationToken);
+		reservationWaitingTokenService.updateWaitingInfo(reservationToken);
 
 		return GetCurrentReservationWaitingTokenPositionResponse.from(position + 1);
 	}
