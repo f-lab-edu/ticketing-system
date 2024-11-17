@@ -1,5 +1,6 @@
 package co.kr.ticketing.memberreservation.reservationtoken.aop;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import org.aspectj.lang.JoinPoint;
@@ -29,7 +30,11 @@ public class ReservationTokenAspect {
 		ReservationTokenState checkTokenState = getCheckTokenState(jp, tokenCheck);
 
 		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		String token = request.getParameter("token");
+		String token = Arrays.stream(request.getCookies())
+			.filter(cookie -> cookie.getName().equals("token"))
+			.findAny()
+			.orElseThrow()
+			.getValue();
 
 		validateToken(token, checkTokenState);
 	}

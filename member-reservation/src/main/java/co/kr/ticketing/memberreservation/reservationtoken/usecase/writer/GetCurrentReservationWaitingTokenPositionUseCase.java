@@ -18,6 +18,7 @@ public class GetCurrentReservationWaitingTokenPositionUseCase {
 	public GetCurrentReservationWaitingTokenPositionResponse execute(String token) {
 		ReservationToken reservationToken = reservationTokenService.getReservationTokenByTokenKey(token);
 
+		//todo) calc position
 		int position = reservationTokenService.getTokenPositionInWaitingQ(reservationToken);
 
 		reservationTokenService.updateWaitingInfo(reservationToken);

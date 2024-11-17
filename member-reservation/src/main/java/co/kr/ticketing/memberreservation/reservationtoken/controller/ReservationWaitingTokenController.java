@@ -1,12 +1,14 @@
 package co.kr.ticketing.memberreservation.reservationtoken.controller;
 
+import static org.springframework.http.HttpHeaders.*;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.kr.ticketing.memberreservation.common.dto.ResponseDto;
@@ -37,14 +39,16 @@ public class ReservationWaitingTokenController {
 		@RequestBody @Valid CreateReservationWaitingTokenRequest request) {
 		var response = createReservationWaitingTokenUseCase.execute(request);
 
-		return ResponseEntity.ok(
-			new ResponseDto<>(MemberReservationTokenResponseCode.CREATE_RESERVATION_WAITING_TOKEN.name(), response));
+		return ResponseEntity.ok()
+			.header(SET_COOKIE, response.token())
+			.body(new ResponseDto<>(MemberReservationTokenResponseCode.CREATE_RESERVATION_WAITING_TOKEN.name(),
+				response));
 	}
 
 	@GetMapping("/position")
 	@ReservationTokenCheck(ReservationTokenState.WAITING)
 	public ResponseEntity<ResponseDto<GetCurrentReservationWaitingTokenPositionResponse>> getCurrentReservationWaitingTokenPosition(
-		@RequestParam String token) {
+		@CookieValue("token") String token) {
 		var response = getCurrentReservationWaitingTokenPositionUseCase.execute(token);
 
 		return ResponseEntity.ok(
