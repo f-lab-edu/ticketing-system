@@ -20,8 +20,15 @@ public class JwtUtil {
 		return generateToken(valueMap, expireSeconds, SECRET_KEY);
 	}
 
+	public Map<String, Object> parsingJwt(String token) throws JwtException {
+		return Jwts.parser()
+			.setSigningKey(SECRET_KEY.getBytes())
+			.parseClaimsJws(token)
+			.getBody();
+	}
+
 	public boolean isValidJwt(String jwt) {
-		if (jwt.isEmpty()) {
+		if (jwt == null || jwt.isEmpty()) {
 			return false;
 		}
 

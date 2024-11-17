@@ -15,15 +15,9 @@ import lombok.experimental.FieldDefaults;
 @Component
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ReservationTokenManager {
+public class ReservationTokenWriteManager {
 	ReservationTokenGenerator tokenGenerator;
 	RedisTemplate<String, Object> redisTemplate;
-
-	public int getWaitingQCount(ReservationTokenValue tokenValue) {
-		int count = redisTemplate.opsForValue().increment(tokenValue.getWaitingQCountName()).intValue();
-		redisTemplate.expire(tokenValue.getWaitingQCountName(), Duration.ofMinutes(10));
-		return count;
-	}
 
 	public ReservationToken createReservationToken(ReservationTokenValue tokenValue, int ordering) {
 		ReservationTokenValue tokenValueWithCount = tokenValue.setOrdering(ordering);
@@ -36,5 +30,17 @@ public class ReservationTokenManager {
 				reservationToken.value().ordering());
 
 		redisTemplate.opsForValue().set(reservationToken.tokenKey(), reservationToken.value());
+	}
+
+	public void updateWaitingQCountTTL(ReservationToken reservationToken) {
+		redisTemplate.expire(reservationToken.value().getWaitingQCountName(), Duration.ofMinutes(10));
+	}
+
+	public void updateReservationTokenTTL(ReservationToken tokenValue) {
+		redisTemplate.expire(tokenValue.tokenKey(), Duration.ofMinutes(1));
+	}
+
+	public void updateWaitingQTTL(ReservationToken tokenValue) {
+		redisTemplate.expire(tokenValue.value().getWaitingQName(), Duration.ofMinutes(5));
 	}
 }

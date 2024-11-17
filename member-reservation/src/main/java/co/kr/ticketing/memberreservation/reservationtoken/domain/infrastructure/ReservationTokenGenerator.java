@@ -4,5 +4,7 @@ import co.kr.ticketing.memberreservation.reservationtoken.domain.model.Reservati
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 
 public interface ReservationTokenGenerator {
+	ReservationToken parsing(String tokenKey);
+
 	ReservationToken generate(ReservationTokenValue tokenValue);
 }
