@@ -5,7 +5,7 @@ import co.kr.ticketing.memberreservation.reservationtoken.domain.model.Reservati
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationTokenValue;
 import jakarta.validation.constraints.NotNull;
 
-public record CreateReservationTokenRequest(
+public record CreateReservationWaitingTokenRequest(
 	@NotNull
 	Long concertId,
 	@NotNull

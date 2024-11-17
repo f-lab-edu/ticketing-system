@@ -2,7 +2,8 @@ package co.kr.ticketing.memberreservation.reservationtoken.usecase.writer;
 
 import org.springframework.stereotype.Service;
 
-import co.kr.ticketing.memberreservation.reservationtoken.controller.response.GetCurrentReservationTokenPositionResponse;
+import co.kr.ticketing.memberreservation.reservationtoken.controller.request.CreateReservationWaitingTokenRequest;
+import co.kr.ticketing.memberreservation.reservationtoken.controller.response.CreateReservationWaitingTokenResponse;
 import co.kr.ticketing.memberreservation.reservationtoken.domain.model.ReservationToken;
 import co.kr.ticketing.memberreservation.reservationtoken.service.ReservationTokenService;
 import lombok.AccessLevel;
@@ -12,17 +13,13 @@ import lombok.experimental.FieldDefaults;
 @Service
 @RequiredArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class GetCurrentReservationTokenPositionUseCase {
+public class CreateReservationWaitingTokenUseCase {
 	ReservationTokenService reservationTokenService;
 
-	public GetCurrentReservationTokenPositionResponse execute(String token) {
-		ReservationToken reservationToken = reservationTokenService.getReservationTokenByTokenKey(token);
+	public CreateReservationWaitingTokenResponse execute(CreateReservationWaitingTokenRequest request) {
+		//todo) concert validation
+		ReservationToken reservationToken = reservationTokenService.saveTokenToWaiting(request.toTokenValue());
 
-		int position = reservationTokenService.getTokenPositionInWaitingQ(reservationToken);
-
-		reservationTokenService.updateWaitingInfo(reservationToken);
-
-		return GetCurrentReservationTokenPositionResponse.from(position + 1);
+		return CreateReservationWaitingTokenResponse.from(reservationToken);
 	}
-
 }

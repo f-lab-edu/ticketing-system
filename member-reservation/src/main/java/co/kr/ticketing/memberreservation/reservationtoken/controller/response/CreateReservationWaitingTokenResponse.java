@@ -4,11 +4,11 @@ import co.kr.ticketing.memberreservation.reservationtoken.domain.model.Reservati
 import lombok.Builder;
 
 @Builder
-public record CreateReservationTokenResponse(
+public record CreateReservationWaitingTokenResponse(
 	String token
 ) {
-	public static CreateReservationTokenResponse from(ReservationToken reservationToken) {
-		return CreateReservationTokenResponse.builder()
+	public static CreateReservationWaitingTokenResponse from(ReservationToken reservationToken) {
+		return CreateReservationWaitingTokenResponse.builder()
 			.token(reservationToken.tokenKey())
 			.build();
 	}

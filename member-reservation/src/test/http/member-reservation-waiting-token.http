@@ -1,5 +1,5 @@
 ### create reservation token
-POST http://localhost:8082/reservations/tokens
+POST http://localhost:8082/reservations/tokens/waiting
 Content-Type: application/json
 
 {
@@ -8,5 +8,6 @@ Content-Type: application/json
 }
 
 ### get reservation token position
-GET http://localhost:8082/reservations/tokens/position?
+GET http://localhost:8082/reservations/tokens/waiting/position?
     token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzZXF1ZW5jZU51bWJlciI6MSwiaWQiOjEsInR5cGUiOiJDT05DRVJUIiwiZXhwIjoxNzMxNjgwNjI0LCJpYXQiOjE3MzE2ODA1NjQsIm9yZGVyaW5nIjo3fQ.EJZzjICXrs3RyWXO_CGAfDBQIcM0ka6tzNZwJLvuEYY
+
